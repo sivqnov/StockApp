@@ -15,7 +15,8 @@ Profile:
 - user (FK to User)
 - photo
 - about
-- shop (FK to shop)
+- shop (FK to Shop)
+- manufacture (FK to Manufacture)
 - role
 
 Shop:
@@ -30,7 +31,7 @@ Product:
 - amount (>= 0)
 - price
 
-Manufacturer:
+Manufacture:
 - id
 - name
 - about
@@ -38,7 +39,7 @@ Manufacturer:
 
 CatalogItem:
 - id
-- manufacturer (FK to Manufacturer)
+- manufacturer (FK to Manufacture)
 - name
 - about
 - code (13 digits)

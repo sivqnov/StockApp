@@ -34,6 +34,7 @@ Manufacturer:
 - id
 - name
 - about
+- photo
 
 CatalogItem:
 - id

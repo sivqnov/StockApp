@@ -1,0 +1,17 @@
+html, body{
+    height: 100%;
+}
+.wrapper{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.header{
+    display: flex;
+    justify-content: space-around;
+}
+.main{
+    /* background-color: #ffd164; */
+    flex: 1 1 auto;
+    position: relative;
+}

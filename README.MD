@@ -1,6 +1,5 @@
 # Stock inventory control system
 
-
 # Database
 User:
 - id
@@ -46,4 +45,41 @@ CatalogItem:
 - expiration date
 - price
 
+# Applications
 
+Members:
+- login
+- register
+- reset_password
+- reset_password_done
+- reset_password_confirm
+- reset_password_complete
+- profile
+- edit_user
+- change_password
+
+Main:
+- main
+- about
+- contacts
+- search
+
+Shop:
+- shop
+- edit_shop
+- delete_shop
+- products
+- product
+- add_product
+- edit_product
+- delete_product
+
+Manufacture:
+- manufacture
+- edit_manufacture
+- delete_manufacture
+- catalog
+- catalog_item
+- add_catalog_item
+- edit_catalog_item
+- delete_catalog_item

@@ -13,5 +13,4 @@ html, body{
 .main{
     /* background-color: #ffd164; */
     flex: 1 1 auto;
-    position: relative;
 }

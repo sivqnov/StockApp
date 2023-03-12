@@ -14,14 +14,16 @@ Profile:
 - user (FK to User)
 - photo
 - about
-- shop (FK to Shop)
-- manufacture (FK to Manufacture)
+- shops (MTM to Shop) i can start managing shop via shop code
+- manufactures (MTM to Manufacture) i can start managing manufacture via manufacture code
 - role
 
 Shop:
 - id
 - name
 - about
+- photo
+- code (random 16 symbols)
 
 Product:
 - id
@@ -35,6 +37,7 @@ Manufacture:
 - name
 - about
 - photo
+- code (random 16 symbols)
 
 CatalogItem:
 - id

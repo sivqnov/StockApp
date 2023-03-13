@@ -13,14 +13,14 @@ Profile:
 - id
 - user (FK to User)
 - photo
-- about
+- bio
 - shops (MTM to Shop) i can start managing shop via shop code
 - manufactures (MTM to Manufacture) i can start managing manufacture via manufacture code
 
 Shop:
 - id
 - name
-- about
+- bio
 - photo
 - code (random 16 symbols)
 
@@ -34,7 +34,7 @@ Product:
 Manufacture:
 - id
 - name
-- about
+- bio
 - photo
 - code (random 16 symbols)
 
@@ -42,7 +42,7 @@ CatalogItem:
 - id
 - manufacturer (FK to Manufacture)
 - name
-- about
+- bio
 - code (13 digits)
 - photo
 - date of manufacture
@@ -52,27 +52,27 @@ CatalogItem:
 # Applications
 
 Members:
-- login
-- register
-- reset_password
-- reset_password_done
-- reset_password_confirm
-- reset_password_complete
-- profile
-- edit_user
-- change_password
+- login (+)
+- register (+)
+- reset_password (+)
+- reset_password_done (+)
+- reset_password_confirm (+)
+- reset_password_complete (+)
+- profile (+)
+- edit_user (+)
+- change_password (+)
 
 Main:
-- main
+- main (+)
 - about
 - contacts
 - search
 
 Shop:
 - shop
+- add_shop
 - edit_shop
 - delete_shop
-- products
 - product
 - add_product
 - edit_product
@@ -80,9 +80,9 @@ Shop:
 
 Manufacture:
 - manufacture
+- add_manufacture
 - edit_manufacture
 - delete_manufacture
-- catalog
 - catalog_item
 - add_catalog_item
 - edit_catalog_item

@@ -27,6 +27,7 @@
                                 <img src="{% static 'images/icons/64.png' %}" height="32" alt="MDB Logo" loading="lazy" />
                                 StockApp
                             </a>
+                            {% if request.user.is_authenticated %}
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Магазины</a>
@@ -34,10 +35,8 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Производства</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Товары</a>
-                                </li>
                             </ul>
+                            {% endif %}
                             <!-- <form class="d-flex input-group w-auto me-3">
                                 <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search"/>
                                 <button class="btn btn-outline-primary" type="button" data-mdb-ripple-color="dark">

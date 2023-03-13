@@ -2,7 +2,7 @@
 <div class="dropdown">
     <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
         {% if request.user.is_authenticated %}
-            {% if profile.photo != "default_user.png" %}
+            {% if profile.photo != "default_user.png"%}
                 <div class="nav_profile_box">
                     <img src="{{ profile.photo.url }}" alt="defaultUser">
                 </div>

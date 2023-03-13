@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Profile
@@ -37,3 +37,33 @@ class RegisterProfileForm(forms.ModelForm):
 
         # self.fields['bio'].label = 'О себе'
         self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeLoginX', 'type': 'text'}
+    
+class PasswordChangingForm(PasswordChangeForm):
+    old_password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control passwordInput', 'type': 'password'}))
+    new_password1 = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control passwordInput', 'type': 'password'}))
+    new_password2 = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control passwordInput', 'type': 'password'}))
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2')
+    
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangingForm, self).__init__(*args, **kwargs)
+
+        self.fields['old_password'].label = 'Старый пароль'
+        self.fields['new_password1'].label = 'Новый пароль'
+        self.fields['new_password2'].label = 'Подтвердите новый пароль'
+
+class SettingPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control passwordInput', 'type': 'password'}))
+    new_password2 = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control passwordInput', 'type': 'password'}))
+
+    class Meta:
+        model = User
+        fields = ('new_password1', 'new_password2')
+    
+    def __init__(self, *args, **kwargs):
+        super(SettingPasswordForm, self).__init__(*args, **kwargs)
+
+        self.fields['new_password1'].label = 'Новый пароль'
+        self.fields['new_password2'].label = 'Подтвердите новый пароль'

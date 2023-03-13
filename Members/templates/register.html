@@ -62,12 +62,17 @@
         
                     <div class="form-outline form-white mb-4">
                         {{ form.password1 }}
-                        <label class="form-label" for="typePasswordX">Пароль</label>
+                        <label class="form-label passwordInput" for="typePasswordX">Пароль</label>
                     </div>
 
                     <div class="form-outline form-white mb-4">
                         {{ form.password2 }}
-                        <label class="form-label" for="typePasswordX">Подтверждение пароля</label>
+                        <label class="form-label passwordInput" for="typePasswordX">Подтверждение пароля</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="checkbox" id="passwordInputCheckbox">
+                      <label class="form-label text-light" for="passwordInputCheckbox">Показать пароль</label>
                     </div>
         
                     <button class="btn btn-outline-light btn-lg px-5" type="submit">Зарегистрироваться</button>
@@ -91,5 +96,5 @@
 {% endblock %}
 
 {% block import %}
-    
+<script src="{% static 'scripts/show_password.js' %}"></script>
 {% endblock %}

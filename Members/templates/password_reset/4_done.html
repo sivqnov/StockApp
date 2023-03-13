@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<div class="shadow p-4 mb-5 mt-5 bg-body rounded">
+    <h1>Пароль был успешно изменен!</h1><br>
+
+    <a href="{% url 'main' %}" class="btn btn-secondary">На главную</a>
+</div>
+
+{% endblock %}
+
+{% block import %}
+    
+{% endblock %}

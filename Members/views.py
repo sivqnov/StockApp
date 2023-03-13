@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import RegisterUserForm, RegisterProfileForm
+from .forms import RegisterUserForm, RegisterProfileForm, PasswordChangingForm, SettingPasswordForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.contrib.auth.views import PasswordChangeView, PasswordResetConfirmView
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -68,3 +70,11 @@ def user_profile(request, user):
     except:
         messages.success(request, ("Пользователя с таким именем не найдено!"))
         return redirect('main')
+
+class PasswordsChangeView(PasswordChangeView):
+    form_class = PasswordChangingForm
+    success_url = reverse_lazy('main')
+
+class PasswordsResetConfirmView(PasswordResetConfirmView):
+    form_class = SettingPasswordForm
+    success_url = reverse_lazy('password_reset_complete')

@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import RegisterUserForm, RegisterProfileForm, PasswordChangingForm, SettingPasswordForm
+from .forms import RegisterUserForm, RegisterProfileForm, PasswordChangingForm, SettingPasswordForm, UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib.auth.views import PasswordChangeView, PasswordResetConfirmView
 from django.urls import reverse_lazy
-
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 # Create your views here.
 
 def login_user(request):
@@ -26,6 +27,7 @@ def login_user(request):
         }
         return render(request, 'login.html', context)
 
+@login_required(login_url='login')
 def logout_user(request):
     username = request.user
     logout(request)
@@ -78,3 +80,51 @@ class PasswordsChangeView(PasswordChangeView):
 class PasswordsResetConfirmView(PasswordResetConfirmView):
     form_class = SettingPasswordForm
     success_url = reverse_lazy('password_reset_complete')
+
+@login_required(login_url='login')
+def delete_profile(request):
+    try:
+        userobj = User.objects.get(username=str(request.user)).delete()
+        messages.success(request, ("Пользователь и все его данные были успешно удалены!"))
+        return redirect('main')
+    except:
+        messages.success(request, ("Произошла ошибка!"))
+        return redirect('main')
+
+@login_required(login_url='login')
+def edit_user(request):
+    user = User.objects.get(username=str(request.user))
+    profile = Profile.objects.get(user=user)
+    form = UpdateUserForm(request.POST or None, instance=user)
+    formProfile = UpdateProfileForm(request.POST or None, request.FILES or None, instance=profile)
+    if form.is_valid() and formProfile.is_valid():
+        form.save()
+        formProfile.save()
+        messages.success(request, ("Данные сохранены!"))
+        return redirect('user', user=user.username)
+    context = {
+        'request': request,
+        'user': user,
+        'profile': profile,
+        'form': form,
+        'formProfile': formProfile,
+    }
+    return render(request, 'edit_user.html', context)
+    # if request.method == "POST":
+    #     form = UpdateUserForm(request.POST, instance=request.user)
+    #     formProfile = UpdateProfileForm(request.POST, request.FILES, instance=Profile.objects.get(user=User.objects.get(user=str(request.user))))
+    #     if form.is_valid() and formProfile.is_valid():
+    #         form.save()
+    #         formProfile.save()
+    #         messages.success(request, ("Данные сохранены!"))
+    #         return redirect('main')
+    # else:
+    #     form = UpdateUserForm()
+    #     formProfile = UpdateProfileForm()
+    # context = {
+    #     'title': 'Редактирование пользователя',
+    #     'request': request,
+    #     'form': form,
+    #     'formProfile': formProfile,
+    #     }
+    # return render(request, 'edit_user.html', context)

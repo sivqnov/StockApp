@@ -21,12 +21,16 @@
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                   style="width: 150px; z-index: 1"> -->
                 <div class="profile_box">
-                    <img src="{{profile.photo.url}}" alt="defaultUser">
+                    {% if profile.photo != 'default_user.png' %}
+                      <img src="{{profile.photo.url}}" alt="defaultUser">
+                    {% else %}
+                      <img src="{% static 'images/default_user.png' %}" alt="defaultUser">
+                    {% endif %}
                 </div>
               </div>
               <div class="ms-3" style="margin-top: 130px;">
                 <h5>{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
-                <p>{{ profile.user.username }}</p>
+                <p>@{{ profile.user.username }}</p>
               </div>
             </div>
             <div class="p-4 text-black d-flex justify-content-space-between" style="background-color: #f8f9fa;">
@@ -44,8 +48,8 @@
                     <p class="small text-muted mb-0">Following</p>
                     </div>
                 </div>
-                <div class="py-1" style="position: absolute; left: 1.5rem;">
-                    <a type="button" href="{% url 'change_password' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
+                <div class="py-1">
+                    <a type="button" href="{% url 'edit_user' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
                         Редактировать профиль
                     </a>
                 </div>
@@ -53,6 +57,7 @@
                      
                 </div>
             </div>
+
             <div class="card-body p-4 text-black">
               <div class="mb-5">
                 <p class="lead fw-normal mb-1">О себе:</p>
@@ -84,12 +89,37 @@
                     alt="image 1" class="w-100 rounded-3">
                 </div>
               </div>
+
+              <button type="button" class="btn btn-danger mb-2 mt-5" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal1">
+                Удалить профиль
+              </button>
+
             </div>
           </div>
         </div>
       </div>
     </div>
 </section>
+
+<div class="modal fade" id="exampleCentralModal1" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="16835" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content text-center">
+      <div class="modal-header bg-danger text-white d-flex justify-content-center">
+        <h5 class="modal-title" id="exampleModalLabel">Вы уверены?</h5>
+      </div>
+      <div class="modal-body">
+        <p>
+          Все данные аккаунта будут удалены без возможности восстановления!
+        </p>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <a href="{% url 'delete_profile' %}" class="btn btn-danger">Да</a>
+        <button type="button" class="btn btn-outline-danger" data-mdb-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block import %}

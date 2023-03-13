@@ -1,0 +1,65 @@
+{% load static %}
+<div class="dropdown">
+    <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+        {% if request.user.is_authenticated %}
+        <div class="nav_profile_box">
+            <img src="{{profile.photo.url}}" alt="defaultUser">
+        </div>
+        <!-- <img src="{{profile.photo.url}}" class="rounded-circle" title="{{request.user}}" height="40" alt="{{ request.user }}" loading="lazy"/> -->
+        {% else %}
+        <div class="nav_profile_box">
+            <img src="{% static 'images/login.png' %}" alt="NoUser">
+        </div>
+        <!-- <img src="{% static 'images/login.png' %}" class="rounded-circle" title="Аутентификация" height="40" alt="Аутентификация" loading="lazy"/> -->
+        {% endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+        {% if request.user.is_authenticated %}
+        <li class="userNameLi">
+            <b class="userNameB">{{request.user}}</b>
+        </li>
+        <hr>
+        {% if request.user.is_superuser %}
+        <li>
+            <a class="dropdown-item" href="/admin">Администратор</a>
+        </li>
+        {% endif %}
+        <li>
+            <a class="dropdown-item" href="/{{request.user}}">Профиль</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">Настройки</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+        </li>
+        {% else %}
+        <li>
+            <a class="dropdown-item" href="{% url 'login' %}">Вход</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'register' %}">Регистрация</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<style>
+.nav_profile_box{
+    position: relative;
+    overflow:hidden;
+    width:40px;
+    height: 40px;
+}
+.nav_profile_box img{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius: 10rem;
+    border: 1px solid gray;
+}
+</style>

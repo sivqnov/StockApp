@@ -2,14 +2,22 @@
 {% load static %}
 
 {% block title %}
-    <title>{{ title }}</title>
+    <title>{{ title }} - StockApp</title>
 {% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'styles/main.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h1>Hello world!</h1>
+    <div class="mainContainer">
+        <img class="mainBackground" src="{% static 'images/main_background.png' %}" alt="">
+        <div class="mainBody">
+            <img class="mainBodyIcon" src="{% static 'images/icons/256.png' %}" alt="">
+            <h1 class="text-light mt-3 mb-5">StockApp - приложение #1 для учёта склада</h1>
+            <a href="{% url 'login' %}" class="btn btn-warning btn-rounded">Начать работу!</a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block import %}

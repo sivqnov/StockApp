@@ -16,7 +16,6 @@ Profile:
 - about
 - shops (MTM to Shop) i can start managing shop via shop code
 - manufactures (MTM to Manufacture) i can start managing manufacture via manufacture code
-- role
 
 Shop:
 - id

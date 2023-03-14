@@ -9,4 +9,5 @@ urlpatterns = [
     path('join_manufacture/', join_manufacture, name="join_manufacture"),
     path('all', all_manufactures, name="all_manufactures"),
     path('<str:name>', view_manufacture, name='view_manufacture'),
+    path('create_item', create_item, name="create_item"),
 ]

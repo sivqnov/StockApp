@@ -29,14 +29,14 @@
                 {% if profile.user.username == request.user.get_username %}
                 <p class="mb-0">
                   <a href="{% url 'create_manufacture' %}" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать</a>
-                  <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal2"><i class="fas fa-link me-2"></i>Добавить</a>
+                  <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal2"><i class="fas fa-link me-2"></i>Вступить</a>
                 </p>
                 {% endif %}
               </div>
               <table class="table align-middle mb-0 bg-white">
                 <tbody>
-                  {% if profile.manufactures.all %}
-                    {% for item in profile.manufactures.all %}
+                  {% if mine.all or manufactures.all %}
+                    {% for item in mine.all %}
                     <tr class="w-100">
                       <td>
                         <div class="d-flex align-items-center">
@@ -52,12 +52,11 @@
                         </div>
                       </td>
                       <td>
-                        {% if profile.user.username == request.user.get_username %}
                         <div class="d-flex justify-content-end">
-                          <a href="{% url 'view_manufacture' name=item.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Открыть">
+                          <a href="{% url 'view_manufacture' name=item.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
                             <i class="fas fa-external-link-alt"></i>
                           </a>
-                          <a href="{% url 'edit_manufacture' name=item.name %}" class="btn btn-primary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Редактировать">
+                          <a href="{% url 'edit_manufacture' name=item.name %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
                             <i class="fas fa-pen"></i>
                           </a>
                           <a href="{% url 'leave_manufacture' name=item.name %}" class="btn btn-warning btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Выйти">
@@ -67,7 +66,30 @@
                             <i class="fas fa-trash"></i>
                           </a>
                         </div>
-                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    {% for item in manufactures %}
+                    <tr class="w-100">
+                      <td>
+                        <div class="d-flex align-items-center">
+                          {% if item.photo %}
+                          <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% else %}
+                          <img src="{% static 'images/manufacture.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% endif %}
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1">{{item.name}}</p>
+                            <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex justify-content-end">
+                          <a href="{% url 'view_manufacture' name=item.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
+                            <i class="fas fa-external-link-alt"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                     {% endfor %}
@@ -88,28 +110,12 @@
     </div>
 </section>
 
-{% if profile.photo != 'default_user.png'%}  
-<div class="modal fade" id="exampleCentralModal4" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="11733" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Фото профиля @{{profile.user}}</h5>
-        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <img src="{{profile.photo.url}}" alt="{{profile.user}}" width="100%">
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
-
 {% if profile.user.username == request.user.get_username %}
 <div class="modal fade" id="exampleCentralModal2" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="5477157" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Добавить предприятие по коду</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Вступить в предприятие по коду</h5>
         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -119,7 +125,7 @@
             <input type="text" maxlength="16" class="form-control form-control-lg" id="joinManufactureCode" name="manufacture_code">
             <label class="form-label" for="joinManufactureCode">16-ти значный код:</label>
           </div>
-          <input class="btn btn-primary btn-lg px-5" type="submit" value="Войти">
+          <input class="btn btn-primary btn-lg px-5" type="submit" value="Вступить">
         </form>
       </div>
       <div class="modal-footer">

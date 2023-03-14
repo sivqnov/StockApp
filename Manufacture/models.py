@@ -26,7 +26,7 @@ class Manufacture(models.Model):
 class CatalogItem(models.Model):
     manufacturer = models.ForeignKey('Manufacture', on_delete=models.CASCADE, blank=False, null=True, verbose_name='Производитель')
     name = models.CharField(max_length = 150, verbose_name='Название')
-    bio = models.TextField(blank=True, verbose_name='О предприятии')
+    bio = models.TextField(blank=True, verbose_name='О товаре')
     code = models.CharField(max_length = 13, verbose_name='Код товара')
     photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=True, verbose_name='Фото')
     date_of_manufacture = models.DateField(verbose_name='Дата производства')

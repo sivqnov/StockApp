@@ -1,0 +1,11 @@
+{% if is_mine %}
+<a href="{% url 'edit_manufacture' name=item.name %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
+    <i class="fas fa-pen"></i>
+</a>
+<a href="{% url 'leave_manufacture' name=item.name %}" class="btn btn-warning btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Выйти">
+    <i class="fas fa-sign-out-alt"></i>
+</a>
+<a href="{% url 'delete_manufacture' name=item.name %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
+    <i class="fas fa-trash"></i>
+</a>
+{% endif %}

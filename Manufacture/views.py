@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CreateManufactureForm
 from django.contrib.auth.models import User
-from .models import Manufacture
+from .models import Manufacture, CatalogItem
 from Members.models import Profile
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -24,7 +24,6 @@ def create_manufacture(request):
         form.save()
         manufacture = Manufacture.objects.get(name=form.cleaned_data['name'])
         code = generate_code()
-        print(f'\n\n\n{code}\n\n\n')
         manufacture.code = code
         manufacture.save()
         user = User.objects.get(username=str(request.user))
@@ -40,39 +39,54 @@ def create_manufacture(request):
 
 @login_required(login_url='login')
 def edit_manufacture(request, name):
-    manufacture = Manufacture.objects.get(name=name)
-    form = CreateManufactureForm(request.POST or None, request.FILES or None, instance=manufacture)
-    if form.is_valid():
-        form.save()
-        messages.success(request, ("Данные сохранены!"))
+    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    if profile.manufactures.filter(name=name).exists():
+        manufacture = Manufacture.objects.get(name=name)
+        form = CreateManufactureForm(request.POST or None, request.FILES or None, instance=manufacture)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ("Данные сохранены!"))
+            return redirect('all_manufactures')
+        context = {
+            'title': 'Редактирование предприятия',
+            'request': request,
+            'form': form,
+        }
+        return render(request, 'create_manufacture.html', context)
+    else:
+        messages.success(request, ("Вы не можете редактировать данное предприятие, так как не состоите в нем!"))
         return redirect('all_manufactures')
-    context = {
-        'title': 'Редактирование предприятия',
-        'request': request,
-        'form': form,
-    }
-    return render(request, 'create_manufacture.html', context)
 
 @login_required(login_url='login')
 def delete_manufacture(request, name):
-    try:
-        manufacture = Manufacture.objects.get(name=name).delete()
-        messages.success(request, ("Предприятие и все его данные были успешно удалены!"))
-        return redirect('all_manufactures')
-    except:
-        messages.success(request, ("Произошла ошибка!"))
+    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    if profile.manufactures.filter(name=name).exists():
+        try:
+            manufacture = Manufacture.objects.get(name=name).delete()
+            messages.success(request, ("Предприятие и все его данные были успешно удалены!"))
+            return redirect('all_manufactures')
+        except:
+            messages.success(request, ("Произошла ошибка!"))
+            return redirect('all_manufactures')
+    else:
+        messages.success(request, ("Вы не можете удалить данное предприятие, так как не состоите в нем!"))
         return redirect('all_manufactures')
 
 @login_required(login_url='login')
 def leave_manufacture(request, name):
-    try:
-        manufacture = Manufacture.objects.get(name=name)
-        profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
-        profile.manufactures.remove(manufacture)
-        messages.success(request, (f"Вы успешно покинули предприятие {manufacture.name}"))
-        return redirect('all_manufactures')
-    except:
-        messages.success(request, ("Произошла ошибка!"))
+    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    if profile.manufactures.filter(name=name).exists():
+        try:
+            manufacture = Manufacture.objects.get(name=name)
+            profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+            profile.manufactures.remove(manufacture)
+            messages.success(request, (f"Вы успешно покинули предприятие {manufacture.name}"))
+            return redirect('all_manufactures')
+        except:
+            messages.success(request, ("Произошла ошибка!"))
+            return redirect('all_manufactures')
+    else:
+        messages.success(request, ("Вы не можете покинуть данное предприятие, так как не состоите в нем!"))
         return redirect('all_manufactures')
 
 @login_required(login_url='login')
@@ -100,10 +114,18 @@ def join_manufacture(request):
 
 @login_required(login_url='login')
 def all_manufactures(request):
+    mine = Profile.objects.get(user=request.user).manufactures
+    manufactures = []
+    for item in Manufacture.objects.all():
+        print(f"\n\n\n{item.name}")
+        if not mine.filter(id=item.id).exists():
+            manufactures.append(item)
     context = {
         'title': 'Все предприятия',
         'request': request,
         'profile': Profile.objects.get(user=request.user),
+        'mine': mine,
+        'manufactures': manufactures,
     }
     return render(request, 'all.html', context)
 
@@ -114,17 +136,42 @@ def view_manufacture(request, name):
         if profile.manufactures.filter(name=name).exists():
             manufacture = Manufacture.objects.get(name=name)
             members = Profile.objects.filter(manufactures__id=manufacture.id)
+            catalog_items = CatalogItem.objects.filter(manufacturer_id=manufacture.id)
             context = {
                 'title': manufacture.name,
                 'request': request,
                 'profile': Profile.objects.get(user=request.user),
                 'manufacture': manufacture,
                 'members': members,
+                'catalog_items': catalog_items,
             }
             return render(request, 'view_manufacture.html', context)
         else:
-            messages.success(request, ("Вы не состоите в этом предприятии"))
+            messages.success(request, ("Вы не состоите в этом предприятии!"))
             return redirect('all_manufactures')
     except:
         messages.success(request, ("Предприятия с таким именем не существует!"))
         return redirect('all_manufactures')
+
+# Catalog Item
+
+@login_required(login_url='login')
+def create_item(request):
+    form = CreateManufactureForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        manufacture = Manufacture.objects.get(name=form.cleaned_data['name'])
+        code = generate_code()
+        print(f'\n\n\n{code}\n\n\n')
+        manufacture.code = code
+        manufacture.save()
+        user = User.objects.get(username=str(request.user))
+        Profile.objects.get(user=user).manufactures.add(manufacture)
+        messages.success(request, ("Предприятие успешно создано и добавлено к вам в профиль!"))
+        return redirect('all_manufactures')
+    context = {
+        'title': 'Создание предприятия',
+        'request': request,
+        'form': form,
+    }
+    return render(request, 'create_item.html', context)

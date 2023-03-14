@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-50">
+      <div class="row d-flex justify-content-center align-items-center h-50">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <div class="mb-md-5 mt-md-4 pb-1">
+  
+                <h2 class="fw-bold mb-">{{title}}</h2>
+                <p class="text-white-50 mb-5">Занесите данные в форму</p>
+
+                {% if form.errors %}
+                    <div class="alert alert-warning text-start" role="alert" data-mdb-color="warning">
+                      <i class="fas fa-exclamation-triangle me-3"></i>
+                      <b>{{ form.errors }}</b>
+                    </div>
+                {% endif %}
+
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-outline form-white mb-4">
+                        {{ form.name }}
+                        <label class="form-label" for="typeNameX">Имя</label>
+                    </div>
+
+                    <div class="form-outline form-white mb-4">
+                      {{ form.bio }}
+                      <label class="form-label" for="typeBioX">О предприятии</label>
+                    </div>
+
+                    <div class="form-outline form-white mb-4">
+                      {{ form.photo }}
+                    </div>
+
+                    <button class="btn btn-light btn-lg px-5" type="submit">Сохранить</button>
+
+                </form>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block import %}
+{% endblock %}

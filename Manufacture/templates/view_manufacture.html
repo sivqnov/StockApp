@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ struser }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-12 col-xl-12">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: black; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <div class="profile_box">
+                    {% if manufacture.photo %} 
+                      <a href="" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal4"><img src="{{ manufacture.photo.url }}" alt="defaultUser"></a>
+                    {% else %}
+                      <img src="{% static 'images/manufacture.png' %}" alt="defaultUser">
+                    {% endif %}
+                </div>
+              </div>
+              <div class="ms-3" style="margin-top: 100px;">
+                <h5>{{ manufacture.name }}</h5>
+                <p>Предприятие</p>
+              </div>
+            </div>
+            <div class="p-4 text-black d-flex justify-content-space-between" style="background-color: #f8f9fa;">
+                <div class="d-flex text-center py-1" style="position: absolute; right: 1.5rem;">
+                    <div>
+                      <p class="mb-1 h5">{{members.count}}</p>
+                      <p class="small text-muted mb-0">Участников</p>
+                    </div>
+                    <div class="px-3">
+                      <p class="mb-1 h5">3</p>
+                      <p class="small text-muted mb-0">Магазинов</p>
+                    </div>
+                    <div>
+                      <p class="mb-1 h5">478</p>
+                      <p class="small text-muted mb-0">Подписчиков</p>
+                    </div>
+                </div>
+                {% if profile.user.username == request.user.get_username %}
+                <div class="py-1">
+                    <a type="button" href="{% url 'edit_manufacture' name=manufacture.name %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
+                        Редактировать предприятие
+                    </a>
+                </div>
+                {% endif %}
+                <div style="padding: 20px;">
+                     
+                </div>
+            </div>
+
+            <div class="card-body p-4 text-black">
+              <div class="mb-5">
+                <p class="lead fw-normal mb-1">О предприятии:</p>
+                <div class="p-4" style="background-color: #f8f9fa;">
+                  <p class="font-italic mb-1">{{ manufacture.bio }}</p>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="lead fw-normal mb-0">Участники</p>
+              </div>
+              <table class="table align-middle mb-0 bg-white">
+                <tbody>
+                  {% if members.all %}
+                    {% for item in members %}
+                    <tr class="w-100">
+                      <td>
+                        <div class="d-flex align-items-center">
+                          {% if item.photo %}
+                          <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% else %}
+                          <img src="{% static 'images/default_user.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% endif %}
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1">{{item.user.first_name}} {{item.user.last_name}}</p>
+                            <p class="text-muted mb-0">@{{item.user.username}}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {% if profile.user.username == request.user.get_username %}
+                        <div class="d-flex justify-content-end">
+                          <a href="{% url 'user' user=item.user.username %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Открыть">
+                            <i class="fas fa-external-link-alt"></i>
+                          </a>
+                          {% if request.user == item.user %}
+                          <a href="{% url 'leave_manufacture' name=manufacture.name %}" class="btn btn-warning btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Выйти">
+                            <i class="fas fa-sign-out-alt"></i>
+                          </a>
+                          {% endif %}
+                        </div>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td>
+                      <p class="text-muted mb-0">Нет ни одного предприятия</p>
+                    </td>
+                  </tr>
+                  {% endif %}
+
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% if profile.photo != 'default_user.png'%}  
+<div class="modal fade" id="exampleCentralModal4" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="11733" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Фото предприятия {{ manufacture.name }}</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <img src="{{manufacture.photo.url}}" alt="{{manufacture.name}}" width="100%">
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if profile.user.username == request.user.get_username %}
+<div class="modal fade" id="exampleCentralModal1" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="16835" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content text-center">
+      <div class="modal-header bg-danger text-white d-flex justify-content-center">
+        <h5 class="modal-title" id="exampleModalLabel">Вы уверены?</h5>
+      </div>
+      <div class="modal-body">
+        <p>
+          Все данные аккаунта будут удалены без возможности восстановления!
+        </p>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <a href="{% url 'delete_profile' %}" class="btn btn-danger">Да</a>
+        <button type="button" class="btn btn-outline-danger" data-mdb-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleCentralModal2" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="5477157" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Добавить предприятие по коду</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'join_manufacture' %}" method="POST">
+          {% csrf_token %}
+          <div class="form-outline form-dark mb-4">
+            <input type="text" maxlength="16" class="form-control form-control-lg" id="joinManufactureCode" name="manufacture_code">
+            <label class="form-label" for="joinManufactureCode">16-ти значный код:</label>
+          </div>
+          <input class="btn btn-primary btn-lg px-5" type="submit" value="Войти">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-mdb-dismiss="modal">
+          Закрыть
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block import %}
+    
+{% endblock %}

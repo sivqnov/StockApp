@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 class Manufacture(models.Model):
-    name = models.CharField(max_length = 150, verbose_name='Название')
+    name = models.CharField(max_length = 150, verbose_name='Название', unique=True)
     photo = models.ImageField(upload_to = 'manufacture/%Y/%m/%d/', blank=True, verbose_name='Фото')
     bio = models.TextField(blank=True, verbose_name='О предприятии')
     code = models.CharField(max_length = 16, verbose_name='Код')
@@ -43,14 +43,3 @@ class CatalogItem(models.Model):
         verbose_name = 'Товар каталога'
         verbose_name_plural = 'Товары каталога'
         ordering = ['-name', '-id']
-
-# CatalogItem:
-# - id
-# - manufacturer (FK to Manufacture)
-# - name
-# - bio
-# - code (13 digits)
-# - photo
-# - date of manufacture
-# - expiration date
-# - price

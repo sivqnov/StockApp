@@ -79,11 +79,12 @@ Shop:
 - delete_product
 
 Manufacture:
-- manufacture
-- add_manufacture
-- edit_manufacture
-- delete_manufacture
-- catalog_item
-- add_catalog_item
-- edit_catalog_item
-- delete_catalog_item
+- manufacture (+)
+- add_manufacture (+)
+- edit_manufacture (+)
+- delete_manufacture (+)
+- catalog_item (+)
+- add_catalog_item (+)
+- edit_catalog_item (+)
+- delete_catalog_item (+)
+- transfer_item

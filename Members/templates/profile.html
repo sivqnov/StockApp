@@ -26,7 +26,10 @@
                 </div>
               </div>
               <div class="ms-3" style="margin-top: 110px;">
-                <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                <h2>
+                  {{ profile.user.first_name }} {{ profile.user.last_name }}
+                  {% if profile.user.is_superuser %}<i class="fas fa-check-circle ms-1"></i>{% endif %}
+                </h2>
                 <p>@{{ profile.user.username }}</p>
               </div>
             </div>

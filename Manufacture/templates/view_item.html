@@ -2,14 +2,15 @@
 {% load static %}
 
 {% block title %}
-    <title>{{ title }} - StockApp</title>
+    <title>{{ item.name }} - StockApp</title>
 {% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
 {% endblock %}
 
 {% block content %}
-<section class="vh-100" style="background-color: #eee;">
+<section class="vh-100 gradient-custom-2">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-12 col-xl-4">
@@ -37,11 +38,11 @@
                         </a>
                 </div>
                 {% endif %}
-                <button type="button" class="btn btn-primary btn-rounded btn-lg">
-                    Заказать на склад
-                </button>
-                <p class="text-muted mt-4 mb-0">Цена {{item.price}}</p>
-                <p class="text-muted my-0">Произведен {{item.date_of_manufacture}}</p>
+                <a type="button" class="btn btn-success btn-rounded btn-lg" title="На склад">
+                  <i class="fas fa-handshake me-2"></i>
+                  {{item.price}} BYN
+                </a>
+                <p class="text-muted mt-4 mb-0">Произведен {{item.date_of_manufacture}}</p>
                 <p class="text-muted my-0">Годен до {{item.expiration_date}}</p>
                 </div>
             </div>

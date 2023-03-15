@@ -36,13 +36,9 @@
                       <p class="mb-1 h5">{{members.count}}</p>
                       <p class="small text-muted mb-0">Участников</p>
                     </div>
-                    <div class="px-3">
-                      <p class="mb-1 h5">3</p>
-                      <p class="small text-muted mb-0">Магазинов</p>
-                    </div>
-                    <div>
-                      <p class="mb-1 h5">478</p>
-                      <p class="small text-muted mb-0">Подписчиков</p>
+                    <div class="ps-3">
+                      <p class="mb-1 h5">{{catalog_items.all.count}}</p>
+                      <p class="small text-muted mb-0">Товаров</p>
                     </div>
                 </div>
                 {% if is_mine %}
@@ -87,7 +83,10 @@
                           <img src="{% static 'images/default_user.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                           {% endif %}
                           <div class="ms-3">
-                            <p class="fw-bold mb-1">{{item.user.first_name}} {{item.user.last_name}}</p>
+                            <p class="fw-bold mb-1">
+                              {{item.user.first_name}} {{item.user.last_name}}
+                              {% if item.user.is_superuser %}<i class="fas fa-check-circle ms-1"></i>{% endif %}
+                            </p>
                             <p class="text-muted mb-0">@{{item.user.username}}</p>
                           </div>
                         </a>

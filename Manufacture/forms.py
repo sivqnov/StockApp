@@ -23,11 +23,11 @@ class CreateCatalogItemForm(forms.ModelForm):
 
         self.fields['name'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeNameX', 'type': 'text'}
         self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeBioX', 'type': 'text'}
-        self.fields['code'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeCodeX'}
+        self.fields['code'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeCodeX', 'maxlength': '13'}
         self.fields['photo'].widget.attrs={'class': 'form-control form-control-lg'}
-        self.fields['date_of_manufacture'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeDateX'}
-        self.fields['expiration_date'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeExpX'}
-        self.fields['price'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typePriceX'}
+        self.fields['date_of_manufacture'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeDateX', 'type': 'date'}
+        self.fields['expiration_date'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeExpX', 'type': 'date'}
+        self.fields['price'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typePriceX', 'step': '0.01'}
 
 # manufacturer = models.ForeignKey('Manufacture', on_delete=models.CASCADE, blank=False, null=True, verbose_name='Производитель')
 # name = models.CharField(max_length = 150, verbose_name='Название')

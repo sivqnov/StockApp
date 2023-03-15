@@ -31,7 +31,7 @@ class CatalogItem(models.Model):
     photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=True, verbose_name='Фото')
     date_of_manufacture = models.DateField(verbose_name='Дата производства')
     expiration_date = models.DateField(verbose_name='Годен до')
-    price = models.FloatField(validators=[MinValueValidator(1)], verbose_name='Цена')
+    price = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(252734999999999.97)], verbose_name='Цена')
 
     def get_absolute_url(self):
         return reverse('catalog_item', kwargs={"id": self.id})

@@ -18,15 +18,15 @@
             <div class="rounded-top text-white d-flex flex-row" style="background-color: black; height:200px;">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
                 <div class="profile_box">
-                    {% if profile.photo != 'default_user.png'%}  
+                    {% if profile.photo != 'default_user.png' or profile.photo %}  
                       <a href="" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal4"><img src="{{profile.photo.url}}" alt="defaultUser"></a>
                     {% else %}
                       <img src="{% static 'images/default_user.png' %}" alt="defaultUser">
                     {% endif %}
                 </div>
               </div>
-              <div class="ms-3" style="margin-top: 130px;">
-                <h5>{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
+              <div class="ms-3" style="margin-top: 110px;">
+                <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
                 <p>@{{ profile.user.username }}</p>
               </div>
             </div>
@@ -81,7 +81,7 @@
                     {% for item in profile.manufactures.all %}
                     <tr class="w-100">
                       <td>
-                        <div class="d-flex align-items-center">
+                        <a href="{% url 'view_manufacture' name=item.name %}" class="d-flex align-items-center">
                           {% if item.photo %}
                           <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                           {% else %}
@@ -91,22 +91,22 @@
                             <p class="fw-bold mb-1">{{item.name}}</p>
                             <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
                           </div>
-                        </div>
+                        </a>
                       </td>
                       <td>
-                        {% if profile.user.username == request.user.get_username %}
                         <div class="d-flex justify-content-end">
                           <a href="{% url 'view_manufacture' name=item.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
                             <i class="fas fa-external-link-alt"></i>
                           </a>
+                          {% if profile.user.username == request.user.get_username %}
                           <a href="{% url 'edit_manufacture' name=item.name %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
                             <i class="fas fa-pen"></i>
                           </a>
                           <a href="{% url 'leave_manufacture' name=item.name %}" class="btn btn-warning btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Выйти">
                             <i class="fas fa-sign-out-alt"></i>
                           </a>
+                          {% endif %}
                         </div>
-                        {% endif %}
                       </td>
                     </tr>
                     {% endfor %}
@@ -121,7 +121,7 @@
                 </tbody>
               </table>
 
-              <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+              <!-- <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
                 <p class="lead fw-normal mb-0">Магазины</p>
                 <p class="mb-0">
                   <a href="#!" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать</a>
@@ -188,7 +188,7 @@
                     </td>
                   </tr>
                 </tbody>
-              </table>
+              </table> -->
 
               {% if profile.user.username == request.user.get_username %}
               <button type="button" class="btn btn-danger mb-2 mt-5" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal1">

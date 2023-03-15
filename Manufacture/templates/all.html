@@ -39,7 +39,7 @@
                     {% for item in mine.all %}
                     <tr class="w-100">
                       <td>
-                        <div class="d-flex align-items-center">
+                        <a href="{% url 'view_manufacture' name=item.name %}" class="d-flex align-items-center">
                           {% if item.photo %}
                           <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                           {% else %}
@@ -49,7 +49,7 @@
                             <p class="fw-bold mb-1">{{item.name}}</p>
                             <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
                           </div>
-                        </div>
+                        </a>
                       </td>
                       <td>
                         <div class="d-flex justify-content-end">
@@ -69,7 +69,7 @@
                     {% for item in manufactures %}
                     <tr class="w-100">
                       <td>
-                        <div class="d-flex align-items-center">
+                        <a href="{% url 'view_manufacture' name=item.name %}" class="d-flex align-items-center">
                           {% if item.photo %}
                           <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                           {% else %}
@@ -79,7 +79,7 @@
                             <p class="fw-bold mb-1">{{item.name}}</p>
                             <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
                           </div>
-                        </div>
+                        </a>
                       </td>
                       <td>
                         <div class="d-flex justify-content-end">

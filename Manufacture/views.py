@@ -166,7 +166,7 @@ def create_item(request, name):
             catalog_item.manufacturer = manufacture
             catalog_item.save()
             messages.success(request, ("Товар каталога успешно создан!"))
-            return redirect('all_manufactures')
+            return redirect('view_manufacture', name=manufacture.name)
         context = {
             'title': 'Создание товара каталога',
             'request': request,
@@ -221,8 +221,9 @@ def view_item(request, id):
         context = {
             'title': CatalogItem.name,
             'request': request,
-            'profile': Profile.objects.get(user=request.user),
+            'profile': profile,
             'item': item,
+            'is_mine': True if profile.manufactures.filter(id=item.manufacturer.id).exists() else False,
         }
         return render(request, 'view_item.html', context)
     except:

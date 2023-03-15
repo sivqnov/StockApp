@@ -19,14 +19,14 @@
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
                 <div class="profile_box">
                     {% if manufacture.photo %} 
-                      <a href="" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal4"><img src="{{ manufacture.photo.url }}" alt="defaultUser"></a>
+                      <a href="" data-mdb-toggle="modal" data-mdb-ripple-color="dark" style="z-index: 1;" data-mdb-target="#ExpandPhotoModal"><img src="{{ manufacture.photo.url }}" alt="defaultUser"></a>
                     {% else %}
                       <img src="{% static 'images/manufacture.png' %}" alt="defaultUser">
                     {% endif %}
                 </div>
               </div>
-              <div class="ms-3" style="margin-top: 100px;">
-                <h5>{{ manufacture.name }}</h5>
+              <div class="ms-3" style="margin-top: 110px;">
+                <h2>{{ manufacture.name }}</h2>
                 <p>Предприятие</p>
               </div>
             </div>
@@ -80,7 +80,7 @@
                     {% for item in members %}
                     <tr class="w-100">
                       <td>
-                        <div class="d-flex align-items-center">
+                        <a href="{% url 'user' user=item.user.username %}" class="d-flex align-items-center">
                           {% if item.photo %}
                           <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                           {% else %}
@@ -90,7 +90,7 @@
                             <p class="fw-bold mb-1">{{item.user.first_name}} {{item.user.last_name}}</p>
                             <p class="text-muted mb-0">@{{item.user.username}}</p>
                           </div>
-                        </div>
+                        </a>
                       </td>
                       <td>
                         {% if profile.user.username == request.user.get_username %}
@@ -141,7 +141,7 @@
                   {% for item in catalog_items.all %}
                   <tr>
                     <td>
-                      <div class="d-flex align-items-center">
+                      <a href="{% url 'view_item' id=item.id %}" class="d-flex align-items-center">
                         {% if item.photo %}
                           <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
                         {% else %}
@@ -151,7 +151,7 @@
                           <p class="fw-bold mb-1">{{item.name}}</p>
                           <p class="text-muted mb-0">{{item.code}}</p>
                         </div>
-                      </div>
+                      </a>
                     </td>
                     <td>
                       <p class="fw-normal mb-1">{{item.price}}</p>
@@ -194,12 +194,12 @@
     </div>
 </section>
 
-{% if profile.photo != 'default_user.png'%}  
-<div class="modal fade" id="exampleCentralModal4" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="11733" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+{% if manufacture.photo %}
+<div class="modal fade" id="ExpandPhotoModal" tabindex="-1" aria-labelledby="ExpandPhotoLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="11733" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Фото предприятия {{ manufacture.name }}</h5>
+        <h5 class="modal-title" id="ExpandPhotoLabel">Фото предприятия {{ manufacture.name }}</h5>
         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4">

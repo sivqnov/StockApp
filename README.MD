@@ -87,4 +87,8 @@ Manufacture:
 - add_catalog_item (+)
 - edit_catalog_item (+)
 - delete_catalog_item (+)
+<<<<<<< HEAD
 - transfer_item
+=======
+- transfer_item
+>>>>>>> 997b3a786bc02dc4be788205d3c4df02b2fb2935

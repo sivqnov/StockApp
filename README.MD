@@ -69,26 +69,28 @@ Main:
 - search
 
 Shop:
-- shop
-- add_shop
-- edit_shop
-- delete_shop
-- product
+- all
+- view_shop
+- add_shop (+)
+- edit_shop (+)
+- delete_shop (+)
+- leave_shop (+)
+- join_shop (+)
+- view_product
 - add_product
 - edit_product
 - delete_product
 
 Manufacture:
-- manufacture (+)
+- all (+)
 - add_manufacture (+)
 - edit_manufacture (+)
 - delete_manufacture (+)
-- catalog_item (+)
+- leave_manufacture (+)
+- join_manufacture (+)
+- view_manufacture (+)
+- view_catalog_item (+)
 - add_catalog_item (+)
 - edit_catalog_item (+)
 - delete_catalog_item (+)
-<<<<<<< HEAD
 - transfer_item
-=======
-- transfer_item
->>>>>>> 997b3a786bc02dc4be788205d3c4df02b2fb2935

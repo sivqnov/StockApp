@@ -1,6 +1,9 @@
 from django import forms
 from .models import Manufacture, CatalogItem
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class CreateManufactureForm(forms.ModelForm):
     class Meta:
         model = Manufacture
@@ -17,6 +20,10 @@ class CreateCatalogItemForm(forms.ModelForm):
     class Meta:
         model = CatalogItem
         fields = ('name', 'bio', 'code', 'photo', 'date_of_manufacture', 'expiration_date', 'price')
+        widgets = {
+            'date_of_manufacture': DateInput(),
+            'expiration_date': DateInput(),
+        }
     
     def __init__(self, *args, **kwargs):
         super(CreateCatalogItemForm, self).__init__(*args, **kwargs)
@@ -25,8 +32,8 @@ class CreateCatalogItemForm(forms.ModelForm):
         self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeBioX', 'type': 'text'}
         self.fields['code'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeCodeX', 'maxlength': '13'}
         self.fields['photo'].widget.attrs={'class': 'form-control form-control-lg'}
-        self.fields['date_of_manufacture'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeDateX', 'type': 'date'}
-        self.fields['expiration_date'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeExpX', 'type': 'date'}
+        self.fields['date_of_manufacture'].widget.attrs={'class': 'form-control form-control-lg form-icon-trailing', 'id': 'typeDateX'}
+        self.fields['expiration_date'].widget.attrs={'class': 'form-control form-control-lg form-icon-trailing', 'id': 'typeExpX', 'type': 'date'}
         self.fields['price'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typePriceX', 'step': '0.01'}
 
 # manufacturer = models.ForeignKey('Manufacture', on_delete=models.CASCADE, blank=False, null=True, verbose_name='Производитель')

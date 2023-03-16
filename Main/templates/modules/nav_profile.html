@@ -22,7 +22,7 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
         {% if request.user.is_authenticated %}
         <li class="userNameLi">
-            <b class="userNameB">{{request.user}}</b>
+            <b class="userNameB">{{request.user}}{% if request.user.is_superuser %}<i class="fas fa-check-circle ms-1"></i>{% endif %}</b>
         </li>
         <hr>
         {% if request.user.is_superuser %}

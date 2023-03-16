@@ -39,13 +39,9 @@
                       <p class="mb-1 h5">{{profile.manufactures.all.count}}</p>
                       <p class="small text-muted mb-0">Предприятий</p>
                     </div>
-                    <div class="px-3">
-                      <p class="mb-1 h5">3</p>
+                    <div class="ps-3">
+                      <p class="mb-1 h5">{{profile.shops.all.count}}</p>
                       <p class="small text-muted mb-0">Магазинов</p>
-                    </div>
-                    <div>
-                      <p class="mb-1 h5">478</p>
-                      <p class="small text-muted mb-0">Подписчиков</p>
                     </div>
                 </div>
                 {% if profile.user.username == request.user.get_username %}
@@ -73,7 +69,7 @@
                 {% if profile.user.username == request.user.get_username %}
                 <p class="mb-0">
                   <a href="{% url 'all_manufactures' %}" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-list me-2"></i>Все предприятия</a>
-                  <a href="{% url 'create_manufacture' %}" class="btn btn-secondary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать</a>
+                  <a href="{% url 'create_manufacture' %}" class="btn btn-secondary btn-rounded btn-sm fw-bold mx-2"><i class="fas fa-file me-2"></i>Создать</a>
                   <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal2"><i class="fas fa-link me-2"></i>Вступить</a>
                 </p>
                 {% endif %}
@@ -124,74 +120,62 @@
                 </tbody>
               </table>
 
-              <!-- <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
                 <p class="lead fw-normal mb-0">Магазины</p>
+                {% if profile.user.username == request.user.get_username %}
                 <p class="mb-0">
-                  <a href="#!" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать</a>
-                  <a href="#!" class="btn btn-primary btn-rounded btn-sm fw-bold"><i class="fas fa-plus me-2"></i>Добавить</a> 
+                  <a href="{% url 'all_manufactures' %}" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-list me-2"></i>Все магазины</a>
+                  <a href="{% url 'create_shop' %}" class="btn btn-secondary btn-rounded btn-sm fw-bold mx-2"><i class="fas fa-file me-2"></i>Создать</a>
+                  <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#joinShopModal"><i class="fas fa-link me-2"></i>Вступить</a>
                 </p>
+                {% endif %}
               </div>
               <table class="table align-middle mb-0 bg-white">
                 <tbody>
+                  {% if profile.shops.all %}
+                    {% for item in profile.shops.all %}
+                    <tr class="w-100">
+                      <td>
+                        <a href="" class="d-flex align-items-center">
+                          {% if item.photo %}
+                          <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% else %}
+                          <img src="{% static 'images/shop.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% endif %}
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1">{{item.name}}</p>
+                            <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
+                          </div>
+                        </a>
+                      </td>
+                      <td>
+                        <div class="d-flex justify-content-end">
+                          <a href="" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
+                            <i class="fas fa-external-link-alt"></i>
+                          </a>
+                          {% if profile.user.username == request.user.get_username %}
+                          <a href="{% url 'edit_shop' name=item.name %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
+                            <i class="fas fa-pen"></i>
+                          </a>
+                          <a href="{% url 'leave_shop' name=item.name %}" class="btn btn-warning btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Выйти">
+                            <i class="fas fa-sign-out-alt"></i>
+                          </a>
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
                   <tr>
                     <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{% static 'images/shop.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">John Doe</p>
-                          <p class="text-muted mb-0">john.doe@gmail.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-pen"></i>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <p class="text-muted mb-0">Нет ни одного магазина</p>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{% static 'images/shop.png' %}" class="rounded-circle" alt="" style="width: 45px; height: 45px"/>
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">Alex Ray</p>
-                          <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-pen"></i>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{% static 'images/shop.png' %}" class="rounded-circle" alt="" style="width: 45px; height: 45px"/>
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">Kate Hunington</p>
-                          <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-pen"></i>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  {% endif %}
+
                 </tbody>
-              </table> -->
+              </table>
 
               {% if profile.user.username == request.user.get_username %}
               <button type="button" class="btn btn-danger mb-2 mt-5" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal1">
@@ -253,6 +237,32 @@
           {% csrf_token %}
           <div class="form-outline form-dark mb-4">
             <input type="text" maxlength="16" class="form-control form-control-lg" id="joinManufactureCode" name="manufacture_code">
+            <label class="form-label" for="joinManufactureCode">16-ти значный код:</label>
+          </div>
+          <input class="btn btn-primary btn-lg px-5" type="submit" value="Вступить">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-mdb-dismiss="modal">
+          Закрыть
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="joinShopModal" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="5477157" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Вступить в магазин по коду</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'join_shop' %}" method="POST">
+          {% csrf_token %}
+          <div class="form-outline form-dark mb-4">
+            <input type="text" maxlength="16" class="form-control form-control-lg" id="joinManufactureCode" name="shop_code">
             <label class="form-label" for="joinManufactureCode">16-ти значный код:</label>
           </div>
           <input class="btn btn-primary btn-lg px-5" type="submit" value="Вступить">

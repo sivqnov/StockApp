@@ -17,7 +17,7 @@
   
           <div class="card" style="border-radius: 15px;">
             <div class="card-body text-center">
-              <div class="mt-3 mb-4">
+              <div class="mt-1 mb-4">
                 {% if item.photo %}
                     <img src="{{ item.photo.url }}" class="img-fluid" alt="{{item.name}}" style="width: 100%; border-radius: 0.7rem;"/>
                 {% else %}
@@ -38,10 +38,12 @@
                         </a>
                 </div>
                 {% endif %}
+                {% if profile.shops.all %}
                 <a type="button" class="btn btn-success btn-rounded btn-lg" title="На склад">
                   <i class="fas fa-handshake me-2"></i>
                   {{item.price}} BYN
                 </a>
+                {% endif %}
                 <p class="text-muted mt-4 mb-0">Произведен {{item.date_of_manufacture}}</p>
                 <p class="text-muted my-0">Годен до {{item.expiration_date}}</p>
                 </div>

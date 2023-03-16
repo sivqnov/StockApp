@@ -67,18 +67,18 @@ def register_user(request):
         return render(request, 'register.html', context)
 
 def user_profile(request, user):
-    try:
-        userobj = User.objects.get(username=user)
-        profile = Profile.objects.get(user = userobj.id)
-        context = {
-            'struser': str(request.user),
-            'profile': profile,
-            'request': request,
-        }
-        return render(request, 'profile.html', context)
-    except:
-        messages.success(request, ("Пользователя с таким именем не найдено!"))
-        return redirect('main')
+    # try:
+    userobj = User.objects.get(username=user)
+    profile = Profile.objects.get(user = userobj.id)
+    context = {
+        'struser': str(request.user),
+        'profile': profile,
+        'request': request,
+    }
+    return render(request, 'profile.html', context)
+    # except:
+    #     messages.success(request, ("Пользователя с таким именем не найдено!"))
+    #     return redirect('main')
 
 class PasswordsChangeView(PasswordChangeView):
     form_class = PasswordChangingForm

@@ -7,7 +7,6 @@ from Members.models import Profile
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from random import randint
-from numpy import vstack
 # Create your views here.
 
 def generate_code():
@@ -39,7 +38,7 @@ def create_manufacture(request):
 
 @login_required(login_url='login')
 def edit_manufacture(request, name):
-    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    profile = Profile.objects.get(user=request.user)
     if profile.manufactures.filter(name=name).exists():
         manufacture = Manufacture.objects.get(name=name)
         form = CreateManufactureForm(request.POST or None, request.FILES or None, instance=manufacture)
@@ -59,10 +58,10 @@ def edit_manufacture(request, name):
 
 @login_required(login_url='login')
 def delete_manufacture(request, name):
-    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    profile = Profile.objects.get(user=request.user)
     if profile.manufactures.filter(name=name).exists():
         try:
-            manufacture = Manufacture.objects.get(name=name).delete()
+            Manufacture.objects.get(name=name).delete()
             messages.success(request, ("Предприятие и все его данные были успешно удалены!"))
             return redirect('all_manufactures')
         except:
@@ -74,11 +73,10 @@ def delete_manufacture(request, name):
 
 @login_required(login_url='login')
 def leave_manufacture(request, name):
-    profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+    profile = Profile.objects.get(user=request.user)
     if profile.manufactures.filter(name=name).exists():
         try:
             manufacture = Manufacture.objects.get(name=name)
-            profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
             profile.manufactures.remove(manufacture)
             messages.success(request, (f"Вы успешно покинули предприятие {manufacture.name}"))
             return redirect('all_manufactures')
@@ -94,7 +92,7 @@ def join_manufacture(request):
     if request.method == "POST":
         code = request.POST.get('manufacture_code', 'default_code')
         if Manufacture.objects.filter(code=code).exists():
-            profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
+            profile = Profile.objects.get(user=request.users)
             if profile.manufactures.filter(code=code).exists():
                 messages.success(request, (f"Вы уже состоите в предприятии {profile.manufactures.get(code=code).name}"))
                 return redirect('all_manufactures')
@@ -106,10 +104,8 @@ def join_manufacture(request):
         else:
             messages.success(request, (f"Предприятия с таким кодом не существует!"))
             return redirect('all_manufactures')
-        # if commentObj.likes.filter(user=User.objects.get(username=currentUser)).exists():
-        
     else:
-        messages.success(request, ("Ошибка:((("))
+        messages.success(request, ("При попытке вступления в предприятие произошла ошибка!"))
         return redirect('all_manufactures')
 
 @login_required(login_url='login')

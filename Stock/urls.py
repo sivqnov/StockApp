@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('Main.urls')),
     path('auth/', include('Members.urls')),
     path('manufacture/', include('Manufacture.urls')),
+    path('shop/', include('Shop.urls')),
     path("<str:user>/", user_profile, name='user'),
 ]
 

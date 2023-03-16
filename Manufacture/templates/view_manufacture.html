@@ -119,7 +119,7 @@
               </table>
 
               <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-                <p class="lead fw-normal mb-0">Каталог товаров</p>
+                <p class="lead fw-normal mb-0">Каталог производимых товаров</p>
                 {% if is_mine %}
                 <p class="mb-0">
                   <a href="{% url 'create_item' name=manufacture.name%}" class="btn btn-secondary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать товар</a>
@@ -153,7 +153,7 @@
                       </a>
                     </td>
                     <td>
-                      <p class="fw-normal mb-1">{{item.price}}</p>
+                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
                     </td>
                     <td>
                       <p class="badge badge-success rounded-pill d-inline">{{item.date_of_manufacture}}</p>

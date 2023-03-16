@@ -92,7 +92,7 @@ def join_manufacture(request):
     if request.method == "POST":
         code = request.POST.get('manufacture_code', 'default_code')
         if Manufacture.objects.filter(code=code).exists():
-            profile = Profile.objects.get(user=request.users)
+            profile = Profile.objects.get(user=request.user)
             if profile.manufactures.filter(code=code).exists():
                 messages.success(request, (f"Вы уже состоите в предприятии {profile.manufactures.get(code=code).name}"))
                 return redirect('all_manufactures')

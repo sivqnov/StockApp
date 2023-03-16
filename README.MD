@@ -76,7 +76,7 @@ Shop:
 - delete_shop (+)
 - leave_shop (+)
 - join_shop (+)
-- view_product
+- view_product(+)
 - add_product
 - edit_product
 - delete_product

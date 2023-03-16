@@ -39,7 +39,7 @@
                 </div>
                 {% endif %}
                 {% if profile.shops.all %}
-                <a type="button" class="btn btn-success btn-rounded btn-lg" title="На склад">
+                <a type="button" class="btn btn-success btn-rounded btn-lg" data-mdb-toggle="modal" data-mdb-target="#toStock" title="На склад">
                   <i class="fas fa-handshake me-2"></i>
                   {{item.price}} BYN
                 </a>
@@ -54,8 +54,68 @@
     </div>
   </section>
 
+{% if profile.shops.all %}
+  <!-- <div class="form-outline">
+    <select class="form-control border border-1 form-control-lg select-input placeholder-active active" type="text" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readonly="">
+      <span class="select-arrow"></span>
+      <option value="1" data-mdb-icon="{% static 'images/shop.png' %}">One</option>
+      <option value="2" data-mdb-icon="{% static 'images/shop.png' %}">Two</option>
+      <option value="3" data-mdb-icon="{% static 'images/shop.png' %}">Three</option>
+      <option value="4" data-mdb-icon="{% static 'images/shop.png' %}">Four</option>
+      <option value="5" data-mdb-icon="{% static 'images/shop.png' %}">Five</option>
+    </select>
+  </div> -->
+
+  <div class="modal fade" id="toStock" tabindex="-1" style="display: none;" data-gtm-vis-first-on-screen-2340190_1302="11733" data-gtm-vis-total-visible-time-2340190_1302="100" data-gtm-vis-has-fired-2340190_1302="1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <div class="modal-header bg-dark text-light">
+          <h5 class="modal-title" id="AddProductLabel">Заказ товара</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+        <div class="modal-body p-4 text-center bg-dark text-light" style="border-radius: 0.5rem;">
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <h2 class="fw-bold mb-">Заказ товара</h2>
+            <p class="text-white-50 mb-5">Занесите данные в форму</p>
+            <form action="{% url 'order' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.name}}" readonly name="item">
+                <label class="form-label" for="typeNameX">Товар</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <input for="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" name="amount">
+                <label class="form-label" for="typeAmountX">Количество</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <input for="typePriceX" type="number" class="form-control form-control-lg" step="0.01" min="0" name="price">
+                <label class="form-label" for="typePriceX">Цена</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <select class="form-control form-control-lg border border-light active bg-dark text-light" type="text" name="stock" id="typeStockX">
+                  {% for item in profile.shops.all %}
+                  <option class="">{{item.name}}</option>
+                  {% endfor %}
+                </select>
+                <label class="form-label bg-dark px-1" for="typeStockX">На склад</label>
+              </div>
+
+              <button class="btn btn-light btn-lg px-5" type="submit">Заказать</button>
+
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
 {% endblock %}
 
 {% block import %}
-    
+  
 {% endblock %}

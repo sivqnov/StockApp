@@ -119,8 +119,9 @@
         <form action="{% url 'join_manufacture' %}" method="POST">
           {% csrf_token %}
           <div class="form-outline form-dark mb-4">
-            <input type="text" maxlength="16" class="form-control form-control-lg" id="joinManufactureCode" name="manufacture_code">
+            <input type="text" maxlength="16" data-mdb-showcounter="true" class="form-control form-control-lg" id="joinManufactureCode" name="manufacture_code">
             <label class="form-label" for="joinManufactureCode">16-ти значный код:</label>
+            <div class="form-helper"></div>
           </div>
           <input class="btn btn-primary btn-lg px-5" type="submit" value="Вступить">
         </form>

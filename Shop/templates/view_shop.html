@@ -67,8 +67,106 @@
                 </div>
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <p class="lead fw-normal mb-0">Участники</p>
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+                <p class="lead fw-normal mb-0">Склад магазина</p>
+                {% if is_mine %}
+                <p class="mb-0">
+                  <a href="" class="btn btn-success btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-ripple-color="dark" data-mdb-target="#AddProduct"><i class="fas fa-plus-circle me-2"></i></i>Добавить товар</a>
+                </p>
+                {% endif %}
+              </div>
+              <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Товар</th>
+                    {% if is_mine %}
+                    <th>Цена за 1 шт.</th>
+                    <th>Количество</th>
+                    <th>Общая цена</th>
+                    <th>Произведен/Годен до</th>
+                    {% endif %}
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if items.all %}
+                  {% for item in items.all %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'view_product' id=item.id %}" class="d-flex align-items-center">
+                        {% if item.item.photo %}
+                          <img src="{{ item.item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                        {% else %}
+                          <img src="{% static 'images/default_product.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                        {% endif %}
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1">{{item.item.name}}</p>
+                          <p class="text-muted mb-0">{{item.item.manufacturer.name}}</p>
+                          <!-- <p class="text-muted mb-0">{{item.item.code}}</p> -->
+                        </div>
+                      </a>
+                    </td>
+                    {% if is_mine %}
+                    <td>
+                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
+                    </td>
+                    <td>
+                        {% if is_mine %}
+                        <p class="fw-normal mb-1">
+                          <a href="{% url 'add_to_product' id=item.id %}" class="me-2" data-mdb-ripple-color="dark" title="Прибавить">
+                            <i class="fas fa-plus"></i>
+                          </a>
+                          {{item.amount}} шт.
+                          <a href="{% url 'sub_from_product' id=item.id %}" class="ms-2" data-mdb-ripple-color="dark" title="Убавить">
+                            <i class="fas fa-minus"></i>
+                          </a>
+                        </p>
+                        {% else %}
+                        <p class="fw-normal mb-1">
+                          {{item.amount}} шт.
+                        </p>
+                        {% endif %}
+                    </td>
+                    <td>
+                      <p class="fw-normal mb-1">{{item.total_price}} BYN</p>
+                    </td>
+                    <td>
+                      <p class="badge badge-success rounded-pill d-inline">{{item.item.date_of_manufacture}}</p>
+                      <p class="badge badge-warning rounded-pill d-inline">{{item.item.expiration_date}}</p>
+                    </td>
+                    {% endif %}
+                    <td>
+                      <div class="d-flex justify-content-end">
+                        <a href="{% url 'view_manufacture' name=item.item.manufacturer.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Производитель ({{item.item.manufacturer.name}})">
+                          <i class="fas fa-industry"></i>
+                        </a>
+                        {% if is_mine %}
+                        <a href="{% url 'edit_product' id=item.id %}" class="btn btn-primary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Редактировать">
+                          <i class="fas fa-pen"></i>
+                        </a>
+                        <a href="{% url 'delete_product' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
+                          <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td>
+                      <p class="text-muted mb-0">Склад пуст</p>
+                    </td>
+                  </tr>
+                {% endif %}
+                </tbody>
+              </table>
+              {% if items.all and is_mine %}
+              <p class="text-muted small mt-2 text-start">Сумма склада {{stock_sum}} BYN</p>
+              {% endif %}
+
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+                <p class="lead fw-normal mb-0">Администраторы</p>
               </div>
               <table class="table align-middle mb-0 bg-white">
                 <tbody>
@@ -117,84 +215,7 @@
 
                 </tbody>
               </table>
-
-              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-                <p class="lead fw-normal mb-0">Склад магазина</p>
-                {% if is_mine %}
-                <p class="mb-0">
-                  <a href="" class="btn btn-success btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-ripple-color="dark" data-mdb-target="#AddProduct"><i class="fas fa-plus-circle me-2"></i></i>Добавить товар</a>
-                </p>
-                {% endif %}
-              </div>
-              <table class="table align-middle mb-0 bg-white">
-                <thead class="bg-light">
-                  <tr>
-                    <th>Товар</th>
-                    <th>Цена</th>
-                    <th>Количество</th>
-                    <th>Произведен/Годен до</th>
-                    <th>Действия</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% if items.all %}
-                  {% for item in items.all %}
-                  <tr>
-                    <td>
-                      <a href="{% url 'view_item' id=item.item.id %}" class="d-flex align-items-center">
-                        {% if item.item.photo %}
-                          <img src="{{ item.item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-                        {% else %}
-                          <img src="{% static 'images/default_product.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-                        {% endif %}
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">{{item.item.name}}</p>
-                          <p class="text-muted mb-0">{{item.item.code}}</p>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
-                    </td>
-                    <td>
-                        <p class="fw-normal mb-1">{{item.amount}} шт.</p>
-                    </td>
-                    <td>
-                      <p class="badge badge-success rounded-pill d-inline">{{item.item.date_of_manufacture}}</p>
-                      <p class="badge badge-warning rounded-pill d-inline">{{item.item.expiration_date}}</p>
-                    </td>
-                    <td>
-                      <div class="d-flex justify-content-end">
-                        <a href="" class="btn btn-success btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Прибавить">
-                          <i class="fas fa-plus"></i>
-                        </a>
-                        <a href="" class="btn btn-danger btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Убавить">
-                          <i class="fas fa-minus"></i>
-                        </a>
-                        <a href="{% url 'view_item' id=item.id %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Открыть">
-                          <i class="fas fa-external-link-alt"></i>
-                        </a>
-                        {% if is_mine %}
-                        <a href="{% url 'edit_item' id=item.id %}" class="btn btn-primary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Редактировать">
-                          <i class="fas fa-pen"></i>
-                        </a>
-                        <a href="{% url 'delete_item' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
-                          <i class="fas fa-trash"></i>
-                        </a>
-                        {% endif %}
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                  {% else %}
-                  <tr>
-                    <td>
-                      <p class="text-muted mb-0">Склад пуст</p>
-                    </td>
-                  </tr>
-                  {% endif %}
-                </tbody>
-              </table>
+              
 
             </div>
           </div>

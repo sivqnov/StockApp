@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="vh-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-12 col-xl-4">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body text-center">
+            <div class="mt-1 mb-4">
+              {% if item.item.photo %}
+                  <img src="{{ item.item.photo.url }}" class="img-fluid" alt="{{item.item.name}}" style="width: 100%; border-radius: 0.7rem;"/>
+              {% else %}
+                  <img src="{% static 'images/default_product.png' %}" class="img-fluid" alt="{{item.item.name}}" style="width: 100%; border-radius: 0.7rem;"/>
+              {% endif %}
+            </div>
+            <h4 class="mb-2">{{item.item.name}}</h4>
+            <p class="text-muted mb-3">Код товара: {{item.item.code}}</p>
+            <a href="{% url 'view_shop' name=item.stock.name %}" class="badge badge-success rounded-pill d-inline" title="Магазин">{{item.stock.name}}</a>
+            <p class="mt-3">{{item.item.bio}}</p>
+            {% if is_mine %}
+            <div class="mb-4 pb-2">
+              <a href="{% url 'edit_product' id=item.id %}" class="btn btn-outline-primary btn-floating" title="Редактировать">
+                <i class="fas fa-pen"></i>
+              </a>
+              <a href="{% url 'delete_product' id=item.id %}" class="btn btn-danger btn-floating" title="Удалить">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+            {% endif %}
+
+
+            {% if profile.shops.all %}
+            <!-- <a href="{% url 'order' item=item.item.name %}" class="btn btn-success btn-rounded btn-lg" title="На склад">
+              <i class="fas fa-handshake pe-none"></i>
+              {{item.item.price}} BYN
+            </a> -->
+            {% endif %}
+
+            
+            <p class="text-muted mt-4 mb-0">Произведен {{item.item.date_of_manufacture}}</p>
+            <p class="text-muted my-0">Годен до {{item.item.expiration_date}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block import %}
+{% endblock %}

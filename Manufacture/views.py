@@ -215,7 +215,7 @@ def view_item(request, id):
         profile = Profile.objects.get(user=request.user)
         item = CatalogItem.objects.get(id=id)
         context = {
-            'title': CatalogItem.name,
+            'title': item.name,
             'request': request,
             'profile': profile,
             'item': item,
@@ -225,23 +225,3 @@ def view_item(request, id):
     except:
         messages.success(request, ("Предприятия с таким именем не существует!"))
         return redirect('all_manufactures')
-
-# @login_required(login_url='login')
-# def edit_manufacture(request, name):
-#     profile = Profile.objects.get(user=User.objects.get(username=str(request.user)))
-#     if profile.manufactures.filter(name=name).exists():
-#         manufacture = Manufacture.objects.get(name=name)
-#         form = CreateManufactureForm(request.POST or None, request.FILES or None, instance=manufacture)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, ("Данные сохранены!"))
-#             return redirect('all_manufactures')
-#         context = {
-#             'title': 'Редактирование предприятия',
-#             'request': request,
-#             'form': form,
-#         }
-#         return render(request, 'create_manufacture.html', context)
-#     else:
-#         messages.success(request, ("Вы не можете редактировать данное предприятие, так как не состоите в нем!"))
-#         return redirect('all_manufactures')

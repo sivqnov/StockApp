@@ -67,8 +67,82 @@
                 </div>
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <p class="lead fw-normal mb-0">Участники</p>
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+                <p class="lead fw-normal mb-0">Каталог производимых товаров</p>
+                {% if is_mine %}
+                <p class="mb-0">
+                  <a href="{% url 'create_item' name=manufacture.name%}" class="btn btn-secondary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать товар</a>
+                </p>
+                {% endif %}
+              </div>
+              <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Произведен/Годен до</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if catalog_items.all %}
+                  {% for item in catalog_items.all %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'view_item' id=item.id %}" class="d-flex align-items-center">
+                        {% if item.photo %}
+                          <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                        {% else %}
+                          <img src="{% static 'images/default_product.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                        {% endif %}
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1">{{item.name}}</p>
+                          <p class="text-muted mb-0">{{item.code}}</p>
+                        </div>
+                      </a>
+                    </td>
+                    <td>
+                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
+                    </td>
+                    <td>
+                      <p class="badge badge-success rounded-pill">{{item.date_of_manufacture}}</p><br>
+                      <p class="badge badge-warning rounded-pill">{{item.expiration_date}}</p>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-end">
+                        {% if profile.shops.all %}
+                        <a href="{% url 'order' item=item.name %}" class="btn btn-success btn-rounded btn-sm fw-bold me-2" title="На склад">
+                          <i class="fas fa-handshake pe-none me-2"></i>
+                          На склад
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'view_item' id=item.id %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        {% if is_mine %}
+                        <a href="{% url 'edit_item' id=item.id %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
+                          <i class="fas fa-pen"></i>
+                        </a>
+                        <a href="{% url 'delete_item' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
+                          <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td>
+                      <p class="text-muted mb-0">Предприятие не выпустило ни одного товара</p>
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+
+              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+                <p class="lead fw-normal mb-0">Администраторы</p>
               </div>
               <table class="table align-middle mb-0 bg-white">
                 <tbody>
@@ -115,74 +189,6 @@
                   </tr>
                   {% endif %}
 
-                </tbody>
-              </table>
-
-              <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-                <p class="lead fw-normal mb-0">Каталог производимых товаров</p>
-                {% if is_mine %}
-                <p class="mb-0">
-                  <a href="{% url 'create_item' name=manufacture.name%}" class="btn btn-secondary btn-rounded btn-sm fw-bold"><i class="fas fa-file me-2"></i>Создать товар</a>
-                </p>
-                {% endif %}
-              </div>
-              <table class="table align-middle mb-0 bg-white">
-                <thead class="bg-light">
-                  <tr>
-                    <th>Товар</th>
-                    <th>Цена</th>
-                    <th>Произведен/Годен до</th>
-                    <th>Действия</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% if catalog_items.all %}
-                  {% for item in catalog_items.all %}
-                  <tr>
-                    <td>
-                      <a href="{% url 'view_item' id=item.id %}" class="d-flex align-items-center">
-                        {% if item.photo %}
-                          <img src="{{ item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-                        {% else %}
-                          <img src="{% static 'images/default_product.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-                        {% endif %}
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">{{item.name}}</p>
-                          <p class="text-muted mb-0">{{item.code}}</p>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
-                    </td>
-                    <td>
-                      <p class="badge badge-success rounded-pill d-inline">{{item.date_of_manufacture}}</p>
-                      <p class="badge badge-warning rounded-pill d-inline">{{item.expiration_date}}</p>
-                    </td>
-                    <td>
-                      <div class="d-flex justify-content-end">
-                        <a href="{% url 'view_item' id=item.id %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть">
-                          <i class="fas fa-external-link-alt"></i>
-                        </a>
-                        {% if is_mine %}
-                        <a href="{% url 'edit_item' id=item.id %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
-                          <i class="fas fa-pen"></i>
-                        </a>
-                        <a href="{% url 'delete_item' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
-                          <i class="fas fa-trash"></i>
-                        </a>
-                        {% endif %}
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                  {% else %}
-                  <tr>
-                    <td>
-                      <p class="text-muted mb-0">Предприятие не выпустило ни одного товара</p>
-                    </td>
-                  </tr>
-                  {% endif %}
                 </tbody>
               </table>
 

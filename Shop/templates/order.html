@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="vh-100 gradient-custom-2">
+    <div class="container py-5 h-50">
+      <div class="row d-flex justify-content-center align-items-center h-50">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <div class="mb-md-5 mt-md-4 pb-1">
+  
+                <h2 class="fw-bold mb-">Заказ товара</h2>
+                <p class="text-white-50 mb-5">Занесите данные в форму</p>
+
+                {% if form.errors %}
+                    <div class="alert alert-warning text-start" role="alert" data-mdb-color="warning">
+                      <i class="fas fa-exclamation-triangle me-3"></i>
+                      <b>{{ form.errors }}</b>
+                    </div>
+                {% endif %}
+
+                <form action="{% url 'order' item=item.name %}" method="POST">
+                  {% csrf_token %}
+                  <div class="form-outline form-white mb-4">
+                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.name}}" readonly name="item">
+                    <label class="form-label" for="typeNameX">Товар</label>
+                  </div>
+      
+                  <div class="form-outline form-white mb-4">
+                    <input for="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" value="0" name="amount">
+                    <label class="form-label" for="typeAmountX">Количество</label>
+                  </div>
+      
+                  <p class="text-muted small mb-3 text-start">Цена у производителя {{item.price}} BYN</p>
+                  <div class="form-outline form-white mb-4">
+                    <input for="typePriceX" type="number" class="form-control form-control-lg" step="0.01" min="0" value="0" name="price">
+                    <label class="form-label" for="typePriceX">Цена</label>
+                  </div>
+      
+                  <div class="form-outline form-white mb-4">
+                    <select class="form-control form-control-lg border border-light active bg-dark text-light" type="text" name="stock" id="typeStockX">
+                      {% for item in profile.shops.all %}
+                      <option class="">{{item.name}}</option>
+                      {% endfor %}
+                    </select>
+                    <label class="form-label bg-dark px-1" for="typeStockX">На склад</label>
+                  </div>
+      
+                  <button class="btn btn-light btn-lg px-5" type="submit">Заказать</button>
+      
+                </form>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block import %}
+{% endblock %}

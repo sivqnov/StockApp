@@ -28,6 +28,9 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('product', kwargs={"id": self.id})
+    
+    def total_price(self):
+        return self.amount * self.price
 
     def __str__(self):
         return f'{self.id}. {self.item.name}'

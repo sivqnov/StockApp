@@ -49,6 +49,9 @@
                     <a type="button" href="{% url 'edit_user' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
                         Редактировать профиль
                     </a>
+                    <button type="button" class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal1">
+                      Удалить профиль
+                    </button>
                 </div>
                 {% endif %}
                 <div style="padding: 20px;">
@@ -177,11 +180,6 @@
                 </tbody>
               </table>
 
-              {% if profile.user.username == request.user.get_username %}
-              <button type="button" class="btn btn-danger mb-2 mt-5" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal1">
-                Удалить профиль
-              </button>
-              {% endif %}
             </div>
           </div>
         </div>

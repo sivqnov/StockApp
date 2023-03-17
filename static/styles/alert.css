@@ -1,0 +1,38 @@
+.alertMain{
+    position: fixed;
+    z-index: 2;
+    width: 400px;
+    top: 80px;
+    right: 20px;
+    padding: 12px 12px 6px 12px;
+    background-color: #dfe7f6;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 15px -3px rgba(0,0,0,0.14), 0 10px 20px -2px rgba(0,0,0,0.08);
+    opacity: 70%;
+    transition: opacity 0.6s, width 0.6s;
+}
+.alertMain:hover{
+    width: 420px;
+    opacity: 100%
+}
+.alertMain .alertCloseButton{
+    position: absolute;
+    top: 32%;
+    right: 2%;
+    color: #2c58a0;
+    width: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: right 0.6s, opacity 0.6s;
+}
+.alertMain:hover .alertCloseButton{
+    opacity: 100%;
+    right: 4%;
+}
+.alertMain .alertBody{
+    padding: 10px 10px 0 10px;
+}
+.alertMain .alertBody p{
+    font-weight: 400;
+    color: #2c58a0;
+}

@@ -1,9 +1,6 @@
 from django import forms
 from .models import Manufacture, CatalogItem
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
 class CreateManufactureForm(forms.ModelForm):
     class Meta:
         model = Manufacture
@@ -21,8 +18,18 @@ class CreateCatalogItemForm(forms.ModelForm):
         model = CatalogItem
         fields = ('name', 'bio', 'code', 'photo', 'date_of_manufacture', 'expiration_date', 'price')
         widgets = {
-            'date_of_manufacture': DateInput(),
-            'expiration_date': DateInput(),
+            'date_of_manufacture': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control', 
+                    'placeholder': 'Select a date',
+                    'type': 'date'
+                    }),
+            'expiration_date': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control', 
+                    'placeholder': 'Select a date',
+                    'type': 'date'
+                    }),
         }
     
     def __init__(self, *args, **kwargs):

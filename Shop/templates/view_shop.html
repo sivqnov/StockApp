@@ -107,7 +107,14 @@
                       </a>
                     </td>
                     <td>
-                      <p class="fw-normal mb-1">{{item.price}} BYN</p>
+                      <div class="fw-normal mb-1">
+                        {{item.price}} BYN
+                        {% if is_mine %}
+                        <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold px-1 py-0 ms-1" data-mdb-toggle="popover" title="Цена" data-mdb-html="true" data-mdb-content="{% include 'inc/_price.html' with item=item %}">
+                          <i class="fas fa-info"></i>
+                        </button>
+                        {% endif %}
+                      </div>
                     </td>
                     {% if is_mine %}
                     <td>

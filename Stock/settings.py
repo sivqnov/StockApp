@@ -142,5 +142,4 @@ EMAIL_HOST_USER = 'stock.app.system'
 EMAIL_HOST_PASSWORD = 'zulmiomsmwtwegeh'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# BYiU8zDV7DcrgBU
 # https://myaccount.google.com/u/1/signinoptions/two-step-verification?opendialog&continue=https://myaccount.google.com/u/1/security-checkup/1?continue%3Dhttps%253A%252F%252Fmyaccount.google.com%252Fu%252F1%252F&pli=1&rapt=AEjHL4O1cER4DRReIhWjBeMuHUsXSkUpVMZXs40NeaJh4CRIOvx8b-t4Wfav9yfG0jLFXvm27Tv2kpPY9U0A6YAOboRCinJdKg

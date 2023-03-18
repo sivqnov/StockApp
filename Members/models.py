@@ -7,7 +7,7 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
-    photo = models.ImageField(upload_to = 'avatars/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to = 'avatars/%Y/%m/%d/', blank=False, verbose_name='Фото')
     bio = models.TextField(blank=True, verbose_name='О себе')
     manufactures = models.ManyToManyField('Manufacture.Manufacture', blank=True, verbose_name="Производства")
     shops = models.ManyToManyField('Shop.Shop', blank=True, verbose_name="Магазины")

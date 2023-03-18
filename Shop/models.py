@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Shop(models.Model):
     name = models.CharField(max_length = 150, verbose_name='Название', unique=True)
-    photo = models.ImageField(upload_to = 'shop/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to = 'shop/%Y/%m/%d/', blank=False, verbose_name='Фото')
     bio = models.TextField(blank=True, verbose_name='О магазине')
     code = models.CharField(max_length = 16, verbose_name='Код')
 

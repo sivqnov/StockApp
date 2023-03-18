@@ -8,7 +8,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Manufacture(models.Model):
     name = models.CharField(max_length = 150, verbose_name='Название', unique=True)
-    photo = models.ImageField(upload_to = 'manufacture/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to = 'manufacture/%Y/%m/%d/', blank=False, verbose_name='Фото')
     bio = models.TextField(blank=True, verbose_name='О предприятии')
     code = models.CharField(max_length = 16, verbose_name='Код')
 
@@ -28,7 +28,7 @@ class CatalogItem(models.Model):
     name = models.CharField(max_length = 150, verbose_name='Название')
     bio = models.TextField(blank=True, verbose_name='О товаре')
     code = models.CharField(max_length = 13, verbose_name='Код товара')
-    photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=False, verbose_name='Фото')
     date_of_manufacture = models.DateField(verbose_name='Дата производства')
     expiration_date = models.DateField(verbose_name='Годен до')
     price = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(252734999999999.97)], verbose_name='Цена')

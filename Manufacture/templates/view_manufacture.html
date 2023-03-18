@@ -79,8 +79,10 @@
                 <thead class="bg-light">
                   <tr>
                     <th>Товар</th>
+                    {% if profile.shops.all %}
                     <th>Цена</th>
                     <th>Произведен/Годен до</th>
+                    {% endif %}
                     <th>Действия</th>
                   </tr>
                 </thead>
@@ -101,6 +103,7 @@
                         </div>
                       </a>
                     </td>
+                    {% if profile.shops.all %}
                     <td>
                       <p class="fw-normal mb-1">{{item.price}} BYN</p>
                     </td>
@@ -108,6 +111,7 @@
                       <p class="badge badge-success rounded-pill">{{item.date_of_manufacture}}</p><br>
                       <p class="badge badge-warning rounded-pill">{{item.expiration_date}}</p>
                     </td>
+                    {% endif %}
                     <td>
                       <div class="d-flex justify-content-end">
                         {% if profile.shops.all %}

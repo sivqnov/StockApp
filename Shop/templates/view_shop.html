@@ -79,12 +79,12 @@
                 <thead class="bg-light">
                   <tr>
                     <th>Товар</th>
-                    {% if is_mine %}
                     <th>Цена за 1 шт.</th>
+                    {% if is_mine %}
                     <th>Количество</th>
                     <th>Общая цена</th>
-                    <th>Произведен/Годен до</th>
                     {% endif %}
+                    <th>Произведен/Годен до</th>
                     <th>Действия</th>
                   </tr>
                 </thead>
@@ -106,10 +106,10 @@
                         </div>
                       </a>
                     </td>
-                    {% if is_mine %}
                     <td>
                       <p class="fw-normal mb-1">{{item.price}} BYN</p>
                     </td>
+                    {% if is_mine %}
                     <td>
                         {% if is_mine %}
                         <p class="fw-normal mb-1">
@@ -130,11 +130,11 @@
                     <td>
                       <p class="fw-normal mb-1">{{item.total_price}} BYN</p>
                     </td>
+                    {% endif %}
                     <td>
                       <p class="badge badge-success rounded-pill d-inline">{{item.item.date_of_manufacture}}</p>
                       <p class="badge badge-warning rounded-pill d-inline">{{item.item.expiration_date}}</p>
                     </td>
-                    {% endif %}
                     <td>
                       <div class="d-flex justify-content-end">
                         <a href="{% url 'view_manufacture' name=item.item.manufacturer.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Производитель ({{item.item.manufacturer.name}})">

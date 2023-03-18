@@ -64,22 +64,19 @@ Members:
 
 Main:
 - main (+)
-- about
-- contacts
-- search
 
 Shop:
-- all
-- view_shop
+- all (+)
+- view_shop (+)
 - add_shop (+)
 - edit_shop (+)
 - delete_shop (+)
 - leave_shop (+)
 - join_shop (+)
 - view_product(+)
-- add_product
-- edit_product
-- delete_product
+- add_product (+)
+- edit_product (+)
+- delete_product (+)
 
 Manufacture:
 - all (+)
@@ -93,4 +90,4 @@ Manufacture:
 - add_catalog_item (+)
 - edit_catalog_item (+)
 - delete_catalog_item (+)
-- transfer_item
+- transfer_item (+)

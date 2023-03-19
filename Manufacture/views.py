@@ -200,7 +200,7 @@ def edit_item(request, id):
             messages.success(request, ("Изменения сохранены!"))
             return redirect('view_manufacture', name=item.manufacturer.name)
         context = {
-            'title': 'Создание товара каталога',
+            'title': 'Редактирование товара каталога',
             'request': request,
             'form': form,
         }

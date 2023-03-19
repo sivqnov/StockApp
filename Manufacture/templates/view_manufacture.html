@@ -81,6 +81,7 @@
                     <th>Товар</th>
                     {% if profile.shops.all %}
                     <th>Цена</th>
+                    <th>Количество</th>
                     <th>Произведен/Годен до</th>
                     {% endif %}
                     <th>Действия</th>
@@ -106,6 +107,9 @@
                     {% if profile.shops.all %}
                     <td>
                       <p class="fw-normal mb-1">{{item.price}} BYN</p>
+                    </td>
+                    <td>
+                      <p class="fw-normal mb-1">{{item.amount}} шт.</p>
                     </td>
                     <td>
                       <p class="badge badge-success rounded-pill">{{item.date_of_manufacture}}</p><br>

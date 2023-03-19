@@ -16,7 +16,7 @@ class Manufacture(models.Model):
         return reverse('manufacture', kwargs={"id": self.id})
 
     def __str__(self):
-        return f'{self.id}. {self.name}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = 'Предприятие'
@@ -29,15 +29,16 @@ class CatalogItem(models.Model):
     bio = models.TextField(blank=True, verbose_name='О товаре')
     code = models.CharField(max_length = 13, verbose_name='Код товара')
     photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=False, verbose_name='Фото')
-    date_of_manufacture = models.DateField(verbose_name='Дата производства')
-    expiration_date = models.DateField(verbose_name='Годен до')
+    date_of_manufacture = models.DateField(verbose_name='Дата производства', default='2000-01-01')
+    expiration_date = models.DateField(verbose_name='Годен до', default='2000-01-01')
+    amount = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100000)], default=100, verbose_name='Произведено единиц')
     price = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(252734999999999.97)], verbose_name='Цена')
 
     def get_absolute_url(self):
         return reverse('catalog_item', kwargs={"id": self.id})
 
     def __str__(self):
-        return f'{self.id}. {self.name}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = 'Товар каталога'

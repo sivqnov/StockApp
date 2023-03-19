@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-12 col-xl-12">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: black; height:200px;">
+              <div class="ms-3" style="margin-top: 110px;">
+                <h1>Корзина</h1>
+              </div>
+            </div>
+
+            <div class="card-body p-4 text-black">
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="lead fw-normal mb-0">Товары</p>
+                <!-- <p class="mb-0">
+                  <a href="{% url 'all_manufactures' %}" class="btn btn-outline-primary btn-rounded btn-sm fw-bold"><i class="fas fa-list me-2"></i>Все предприятия</a>
+                  <a href="{% url 'create_manufacture' %}" class="btn btn-secondary btn-rounded btn-sm fw-bold mx-2"><i class="fas fa-file me-2"></i>Создать</a>
+                  <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#exampleCentralModal2"><i class="fas fa-link me-2"></i>Вступить</a>
+                </p> -->
+              </div>
+              <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Товар</th>
+                    <th>Цена за 1 шт.</th>
+                    <th>Количество</th>
+                    <th>Общая цена</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if profile.cart.all %}
+                    {% for item in profile.cart.all %}
+                    <tr class="w-100">
+                      <td>
+                        <a href="{% url 'view_product' id=item.product.id %}" class="d-flex align-items-center">
+                          {% if item.product.item.photo %}
+                            <img src="{{ item.product.item.photo.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% else %}
+                            <img src="{% static 'images/default_product.png' %}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+                          {% endif %}
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1">{{item.product.item.name}}</p>
+                            <p class="text-muted mb-0">{{item.product.stock}}</p>
+                          </div>
+                        </a>
+                      </td>
+                      <td>
+                        {{item.product.price}} BYN
+                      </td>
+                      <td>
+                        <p class="fw-normal mb-1">
+                          <a href="{% url 'add_to_cart' id=item.id %}" class="me-2" data-mdb-ripple-color="dark" title="Прибавить">
+                            <i class="fas fa-plus"></i>
+                          </a>
+                          {{item.amount}} шт.
+                          <a href="{% url 'sub_from_cart' id=item.id %}" class="ms-2" data-mdb-ripple-color="dark" title="Убавить">
+                            <i class="fas fa-minus"></i>
+                          </a>
+                        </p>
+                      </td>
+                      <td>
+                        {{item.total}} BYN
+                      </td>
+                      <td>
+                        <div class="d-flex justify-content-end">
+                          <a href="{% url 'view_shop' name=item.product.stock.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть магазин">
+                            <i class="fas fa-shopping-bag"></i>
+                          </a>
+                          <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
+                            <i class="fas fa-pen"></i>
+                          </a>
+                          <a href="{% url 'delete_from_cart' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td>
+                      <p class="text-muted mb-0">Корзина пуста</p>
+                    </td>
+                  </tr>
+                  {% endif %}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block import %}
+    
+{% endblock %}

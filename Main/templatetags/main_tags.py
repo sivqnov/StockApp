@@ -18,3 +18,7 @@ def nav_profile(request):
             "request": request,
         }
     return context
+
+@register.simple_tag()
+def cart_items(request):
+    return Profile.objects.get(user=request.user).cart.count()

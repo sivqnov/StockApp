@@ -15,4 +15,5 @@ urlpatterns = [
     path('add_to_product/<int:id>', add_to_product, name='add_to_product'),
     path('sub_from_product/<int:id>', sub_from_product, name='sub_from_product'),
     path('view_product/<int:id>', view_product, name='view_product'),
+    path('to_basket/<int:id>', to_basket, name='to_basket'),
 ]

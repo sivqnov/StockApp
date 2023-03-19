@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load shop_tags %}
 
 {% block title %}
     <title>{{ title }} - StockApp</title>
@@ -82,7 +83,6 @@
                     <th>Цена за 1 шт.</th>
                     {% if is_mine %}
                     <th>Количество</th>
-                    <th>Общая цена</th>
                     {% endif %}
                     <th>Произведен/Годен до</th>
                     <th>Действия</th>
@@ -110,7 +110,7 @@
                       <div class="fw-normal mb-1">
                         {{item.price}} BYN
                         {% if is_mine %}
-                        <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold px-1 py-0 ms-1" data-mdb-toggle="popover" title="Цена" data-mdb-html="true" data-mdb-content="{% include 'inc/_price.html' with item=item %}">
+                        <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold px-1 py-0 ms-1" data-mdb-toggle="popover" title="Цена" data-mdb-html="true" data-mdb-content="{% price item %}">
                           <i class="fas fa-info"></i>
                         </button>
                         {% endif %}
@@ -134,9 +134,6 @@
                         </p>
                         {% endif %}
                     </td>
-                    <td>
-                      <p class="fw-normal mb-1">{{item.total_price}} BYN</p>
-                    </td>
                     {% endif %}
                     <td>
                       <p class="badge badge-success rounded-pill d-inline">{{item.item.date_of_manufacture}}</p>
@@ -144,6 +141,10 @@
                     </td>
                     <td>
                       <div class="d-flex justify-content-end">
+                        <a href="{% url 'to_basket' id=item.id %}" class="btn btn-success btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="В корзину">
+                          <i class="fas fa-cart-plus me-1"></i>
+                          {{item.price}} BYN
+                        </a>
                         <a href="{% url 'view_manufacture' name=item.item.manufacturer.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold me-2" data-mdb-ripple-color="dark" title="Производитель ({{item.item.manufacturer.name}})">
                           <i class="fas fa-industry"></i>
                         </a>
@@ -219,11 +220,8 @@
                     </td>
                   </tr>
                   {% endif %}
-
                 </tbody>
               </table>
-              
-
             </div>
           </div>
         </div>
@@ -307,7 +305,7 @@
                   </a>
                 </td>
               </tr>
-              {% for item in profile.manufactures.all %}
+              {% for item in manufactures.all %}
               <tr class="w-100">
                 <td>
                   <a href="{% url 'view_manufacture' name=item.name %}" class="d-flex align-items-center">

@@ -19,7 +19,7 @@
   
               <div class="mb-md-5 mt-md-4 pb-1">
   
-                <h2 class="fw-bold mb-">Заказ товара</h2>
+                <h2 class="fw-bold mb-">Занесение товара в корзину</h2>
                 <p class="text-white-50 mb-5">Занесите данные в форму</p>
 
                 {% if form.errors %}
@@ -29,10 +29,15 @@
                     </div>
                 {% endif %}
 
-                <form action="{% url 'order' item=item.name %}" method="POST">
+                <form action="{% url 'to_basket' id=item.id %}" method="POST">
                   {% csrf_token %}
                   <div class="form-outline form-white mb-4">
-                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.name}}" readonly name="item">
+                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.stock.name}}" readonly name="shop">
+                    <label class="form-label" for="typeNameX">Магазин</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.item.name}}" readonly name="item">
                     <label class="form-label" for="typeNameX">Товар</label>
                   </div>
                   
@@ -42,22 +47,7 @@
                     <label class="form-label" for="typeAmountX">Количество</label>
                   </div>
       
-                  <p class="text-muted small mb-3 text-start">Цена у производителя {{item.price}} BYN</p>
-                  <div class="form-outline form-white mb-4">
-                    <input for="typePriceX" type="number" class="form-control form-control-lg" step="0.01" min="0" value="0" name="price">
-                    <label class="form-label" for="typePriceX">Цена</label>
-                  </div>
-      
-                  <div class="form-outline form-white mb-4">
-                    <select class="form-control form-control-lg border border-light active bg-dark text-light" type="text" name="stock" id="typeStockX">
-                      {% for item in profile.shops.all %}
-                      <option class="">{{item.name}}</option>
-                      {% endfor %}
-                    </select>
-                    <label class="form-label bg-dark px-1" for="typeStockX">На склад</label>
-                  </div>
-      
-                  <button class="btn btn-light btn-lg px-5" type="submit">Заказать</button>
+                  <button class="btn btn-light btn-lg px-5" type="submit">В корзину</button>
       
                 </form>
   

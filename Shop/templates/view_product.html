@@ -38,7 +38,7 @@
             </div>
             {% endif %}
 
-            <a class="btn btn-success btn-rounded btn-lg" title="Покупка">
+            <a href="{% url 'to_basket' id=item.id %}" class="btn btn-success btn-rounded btn-lg" title="Покупка">
               <i class="fas fa-shopping-basket pe-2"></i>
               {{item.price}} BYN
             </a>

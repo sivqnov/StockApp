@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import RegisterUserForm, RegisterProfileForm, PasswordChangingForm, SettingPasswordForm, UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.models import User
-from .models import Profile
+from Shop.models import Product
+from .models import Profile, CartItem
 from django.contrib.auth.views import PasswordChangeView, PasswordResetConfirmView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -71,6 +72,7 @@ def user_profile(request, user):
         userobj = User.objects.get(username=user)
         profile = Profile.objects.get(user = userobj.id)
         context = {
+            'title': userobj.get_username,
             'struser': str(request.user),
             'profile': profile,
             'request': request,
@@ -120,3 +122,57 @@ def edit_user(request):
         'formProfile': formProfile,
     }
     return render(request, 'edit_user.html', context)
+
+@login_required(login_url='login')
+def cart(request):
+    profile = Profile.objects.get(user=request.user)
+    context = {
+        'title': 'Корзина',
+        'request': request,
+        'profile': profile,
+    }
+    return render(request, 'cart.html', context)
+
+@login_required(login_url='login')
+def delete_from_cart(request, id):
+    profile = Profile.objects.get(user=request.user)
+    cart_item = CartItem.objects.get(id=id)
+    product = Product.objects.get(id=cart_item.product.id)
+    product.amount += cart_item.amount
+    product.save()
+    cart_item.delete()
+    messages.success(request, ("Товар был удален из корзины"))
+    return redirect('cart')
+
+@login_required(login_url='login')
+def add_to_cart(request, id):
+    profile = Profile.objects.get(user=request.user)
+    cart_item = CartItem.objects.get(id=id)
+    product = Product.objects.get(id=cart_item.product.id)
+    if product.amount > 1:
+        product.amount -= 1
+        product.save()
+        cart_item.amount += 1
+        cart_item.save()
+        return redirect('cart')
+    else:
+        messages.success(request, ("Товар закончился на складе магазина"))
+        return redirect('cart')
+
+@login_required(login_url='login')
+def sub_from_cart(request, id):
+    profile = Profile.objects.get(user=request.user)
+    cart_item = CartItem.objects.get(id=id)
+    product = Product.objects.get(id=cart_item.product.id)
+    if cart_item.amount > 1:
+        product.amount += 1
+        product.save()
+        cart_item.amount -= 1
+        cart_item.save()
+        return redirect('cart')
+    else:
+        product.amount += 1
+        product.save()
+        cart_item.delete()
+        messages.success(request, ("Товар был удален из корзины"))
+        return redirect('cart')

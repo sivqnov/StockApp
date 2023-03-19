@@ -35,7 +35,8 @@
                     <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{product.item.name}}" readonly name="item">
                     <label class="form-label" for="typeNameX">Товар</label>
                   </div>
-      
+                  
+                  <p class="text-muted small mb-3 text-start">Максимальное количество для заказа {{max_to_order}} шт.</p>
                   <div class="form-outline form-white mb-4">
                     <!-- <input for="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" value="0" name="amount"> -->
                     {{form.amount}}

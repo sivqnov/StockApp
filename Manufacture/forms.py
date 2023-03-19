@@ -16,17 +16,17 @@ class CreateManufactureForm(forms.ModelForm):
 class CreateCatalogItemForm(forms.ModelForm):
     class Meta:
         model = CatalogItem
-        fields = ('name', 'bio', 'code', 'photo', 'date_of_manufacture', 'expiration_date', 'price')
+        fields = ('name', 'bio', 'code', 'photo', 'date_of_manufacture', 'expiration_date', 'amount', 'price')
         widgets = {
             'date_of_manufacture': forms.DateInput(
                 format=('%Y-%m-%d'),
-                attrs={'class': 'form-control', 
+                attrs={'class': 'form-control form-control-lg form-icon-trailing', 
                     'placeholder': 'Select a date',
                     'type': 'date'
                     }),
             'expiration_date': forms.DateInput(
                 format=('%Y-%m-%d'),
-                attrs={'class': 'form-control', 
+                attrs={'class': 'form-control form-control-lg form-icon-trailing', 
                     'placeholder': 'Select a date',
                     'type': 'date'
                     }),
@@ -39,8 +39,7 @@ class CreateCatalogItemForm(forms.ModelForm):
         self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeBioX', 'type': 'text'}
         self.fields['code'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeCodeX', 'maxlength': '13'}
         self.fields['photo'].widget.attrs={'class': 'form-control form-control-lg'}
-        self.fields['date_of_manufacture'].widget.attrs={'class': 'form-control form-control-lg form-icon-trailing', 'id': 'typeDateX'}
-        self.fields['expiration_date'].widget.attrs={'class': 'form-control form-control-lg form-icon-trailing', 'id': 'typeExpX', 'type': 'date'}
+        self.fields['amount'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeAmountX', 'step': '1'}
         self.fields['price'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typePriceX', 'step': '0.01'}
 
 # manufacturer = models.ForeignKey('Manufacture', on_delete=models.CASCADE, blank=False, null=True, verbose_name='Производитель')

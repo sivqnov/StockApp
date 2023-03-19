@@ -101,7 +101,14 @@
                         {% endif %}
                         <div class="ms-3">
                           <p class="fw-bold mb-1">{{item.item.name}}</p>
-                          <p class="text-muted mb-0">{{item.item.manufacturer.name}}</p>
+                          <p class="text-muted mb-0">
+                            {% if item.item.manufacturer.photo %}
+                              <img src="{{ item.item.manufacturer.photo.url }}" alt="" style="width: 16px; height: 16px" class="rounded-circle"/>
+                            {% else %}
+                              <img src="{% static 'images/shop.png' %}" alt="" style="width: 16px; height: 16px" class="rounded-circle"/>
+                            {% endif %}
+                            {{item.item.manufacturer.name}}
+                          </p>
                           <!-- <p class="text-muted mb-0">{{item.item.code}}</p> -->
                         </div>
                       </a>
@@ -316,7 +323,9 @@
                     {% endif %}
                     <div class="ms-3">
                       <p class="fw-bold mb-1">{{item.name}}</p>
-                      <p class="text-muted mb-0">{{item.bio|truncatewords:8}}</p>
+                      <p class="text-muted mb-0">
+                        {{item.bio|truncatewords:8}}
+                      </p>
                     </div>
                   </a>
                 </td>

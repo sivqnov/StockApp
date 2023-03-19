@@ -32,8 +32,8 @@
                 <form action="{% url 'to_basket' id=item.id %}" method="POST">
                   {% csrf_token %}
                   <div class="form-outline form-white mb-4">
-                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.stock.name}}" readonly name="shop">
-                    <label class="form-label" for="typeNameX">Магазин</label>
+                    <input type="text" id="typeShopX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.stock.name}}" readonly name="shop">
+                    <label class="form-label" for="typeShopX">Магазин</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
@@ -43,11 +43,11 @@
                   
                   <p class="text-muted small mb-3 text-start">Максимальное количество для заказа {{item.amount}} шт.</p>
                   <div class="form-outline form-white mb-4">
-                    <input for="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" value="0" name="amount">
+                    <input id="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" value="0" name="amount">
                     <label class="form-label" for="typeAmountX">Количество</label>
                   </div>
       
-                  <button class="btn btn-light btn-lg px-5" type="submit">В корзину</button>
+                  <button class="btn btn-light btn-lg px-5" id="buyButton" type="submit">{{item.price}} BYN</button>
       
                 </form>
   
@@ -61,4 +61,17 @@
 {% endblock %}
 
 {% block import %}
+<script>
+  let price = parseFloat("{{item.price}}".replace(",", "."));
+  let button = document.getElementById('buyButton');
+  document.addEventListener('change',(e) =>
+    {
+      let elementID = e.target.id;
+      if(elementID == "typeAmountX"){
+        let res = (parseInt(document.getElementById('typeAmountX').value) * price).toFixed(2);
+        button.innerHTML = `${res} BYN`;
+      }
+    }
+  );
+</script>
 {% endblock %}

@@ -80,7 +80,7 @@
                           <a href="{% url 'view_shop' name=item.product.stock.name %}" class="btn btn-secondary btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Открыть магазин">
                             <i class="fas fa-shopping-bag"></i>
                           </a>
-                          <a href="" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
+                          <a href="{% url 'edit_cart' id=item.id %}" class="btn btn-primary btn-rounded btn-sm fw-bold mx-2" data-mdb-ripple-color="dark" title="Редактировать">
                             <i class="fas fa-pen"></i>
                           </a>
                           <a href="{% url 'delete_from_cart' id=item.id %}" class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" title="Удалить">
@@ -100,6 +100,12 @@
 
                 </tbody>
               </table>
+              <div class="mt-5 text-center">
+                <button class="btn btn-success btn-lg px-5" type="submit">
+                  <i class="fas fa-shopping-cart me-2"></i>
+                  Оформить покупки ({{total}} BYN)
+                </button>
+              </div>
             </div>
           </div>
         </div>

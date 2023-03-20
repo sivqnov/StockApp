@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ title }} - StockApp</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="vh-100 gradient-custom-2">
+    <div class="container py-5 h-50">
+      <div class="row d-flex justify-content-center align-items-center h-50">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <div class="mb-md-5 mt-md-4 pb-1">
+  
+                <h2 class="fw-bold mb-">Редактирование товара в корзине</h2>
+                <p class="text-white-50 mb-5">Занесите данные в форму</p>
+
+                <form action="{% url 'edit_cart' id=item.id %}" method="POST">
+                  {% csrf_token %}
+                  <div class="form-outline form-white mb-4">
+                    <input type="text" id="typeShopX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.product.stock.name}}" readonly name="shop">
+                    <label class="form-label" for="typeShopX">Магазин</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                    <input type="text" id="typeNameX" class="form-control form-control-lg bg-dark text-secondary disabled" value="{{item.product.item.name}}" readonly name="item">
+                    <label class="form-label" for="typeNameX">Товар</label>
+                  </div>
+                  
+                  <p class="text-muted small mb-3 text-start">Максимальное количество для заказа {{max_to_order}} шт.</p>
+                  <div class="form-outline form-white mb-4">
+                    <input id="typeAmountX" type="number" class="form-control form-control-lg" step="1" min="0" max="{{max_to_order}}" value="{{item.amount}}" name="amount">
+                    <label class="form-label" for="typeAmountX">Количество</label>
+                  </div>
+      
+                  <button class="btn btn-light btn-lg px-5" id="buyButton" type="submit">{{start_price}} BYN</button>
+      
+                </form>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block import %}
+<script>
+  let price = parseFloat("{{item.product.price}}".replace(",", "."));
+  let button = document.getElementById('buyButton');
+  document.addEventListener('change',(e) =>
+    {
+      let elementID = e.target.id;
+      if(elementID == "typeAmountX"){
+        let res = (parseInt(document.getElementById('typeAmountX').value) * price).toFixed(2);
+        button.innerHTML = `${res} BYN`;
+      }
+    }
+  );
+</script>
+{% endblock %}

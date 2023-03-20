@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import RegisterUserForm, RegisterProfileForm, PasswordChangingForm, SettingPasswordForm, UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.models import User
-from Shop.models import Product
+from Shop.models import Product, Shop
 from .models import Profile, CartItem
 from django.contrib.auth.views import PasswordChangeView, PasswordResetConfirmView
 from django.urls import reverse_lazy
@@ -126,10 +126,14 @@ def edit_user(request):
 @login_required(login_url='login')
 def cart(request):
     profile = Profile.objects.get(user=request.user)
+    total = 0
+    for item in profile.cart.all():
+        total += item.product.price * item.amount
     context = {
         'title': 'Корзина',
         'request': request,
         'profile': profile,
+        'total': round(total, 2),
     }
     return render(request, 'cart.html', context)
 
@@ -175,4 +179,60 @@ def sub_from_cart(request, id):
         product.save()
         cart_item.delete()
         messages.success(request, ("Товар был удален из корзины"))
+        return redirect('cart')
+
+@login_required(login_url='login')
+def edit_cart(request, id):
+    profile = Profile.objects.get(user=request.user)
+    if profile.cart.filter(id=id).exists():
+        if request.method == "POST":
+            item = profile.cart.get(id=id)
+            if Shop.objects.filter(name=request.POST.get('shop', 'default_shop')).exists():
+                shop = Shop.objects.get(name=request.POST.get('shop', 'default_shop'))
+                if Product.objects.filter(id=item.product.id).filter(stock=shop).exists():
+                    max_to_order = item.amount + item.product.amount
+                    form_amount = int(request.POST.get('amount', '0'))
+                    print(f"\n\n\n{form_amount}\n\n\n")
+                    if form_amount>0:
+                        if form_amount > max_to_order:
+                            messages.success(request, ("На складе магазине нет такого количества товара"))
+                            return redirect('edit_cart', id=id)
+                        else:
+                            product = item.product
+                            if form_amount > item.amount:
+                                product.amount -= (form_amount - item.amount)
+                                product.save()
+                                item.amount = form_amount
+                                item.save()
+                            elif item.amount == form_amount:
+                                pass
+                            else:
+                                product.amount += (item.amount - form_amount)
+                                product.save()
+                                item.amount = form_amount
+                                item.save()
+                            messages.success(request, ("Успех!"))
+                            return redirect('cart')
+                    else:
+                        messages.success(request, ("Количество товара в корзине не может быть меньше или равно 0"))
+                        return redirect('edit_cart', id=id)
+                else:
+                    messages.success(request, ("Такого товара не существует"))
+                    return redirect('edit_cart', id=id)
+            else:
+                messages.success(request, ("Магазина с таким названием не существует"))
+                return redirect('edit_cart', id=id)
+        else:
+            item = profile.cart.get(id=id)
+            context = {
+                'title': 'Редактирование товара в корзине',
+                'request': request,
+                'profile': Profile.objects.get(user=request.user),
+                'item': item,
+                'max_to_order': item.amount + item.product.amount,
+                'start_price': round(item.amount * item.product.price, 2),
+            }
+            return render(request, 'edit_cart.html', context)
+    else:
+        messages.success(request, ("Такого товара нет в вашей корзине"))
         return redirect('cart')

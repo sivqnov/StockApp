@@ -133,6 +133,9 @@ def view_manufacture(request, name):
         manufacture = Manufacture.objects.get(name=name)
         members = Profile.objects.filter(manufactures__id=manufacture.id)
         catalog_items = CatalogItem.objects.filter(manufacturer_id=manufacture.id)
+        stock_sum = 0
+        for item in catalog_items:
+            stock_sum += item.price * item.amount
         context = {
             'title': manufacture.name,
             'request': request,
@@ -140,6 +143,7 @@ def view_manufacture(request, name):
             'manufacture': manufacture,
             'members': members,
             'catalog_items': catalog_items,
+            'stock_sum': round(stock_sum, 2),
             'is_mine': is_mine,
         }
         return render(request, 'view_manufacture.html', context)

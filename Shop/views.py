@@ -135,8 +135,10 @@ def view_shop(request, name):
         members = Profile.objects.filter(shops__id=shop.id)
         items = Product.objects.filter(stock_id=shop.id)
         stock_sum = 0
+        stock_manuf_sum = 0
         for item in items:
             stock_sum += item.price * item.amount
+            stock_manuf_sum += item.item.price * item.amount
         context = {
             'title': shop.name,
             'request': request,
@@ -147,6 +149,9 @@ def view_shop(request, name):
             'is_mine': is_mine,
             'manufactures': Manufacture.objects.all(),
             'stock_sum': round(stock_sum, 2),
+            'stock_manuf_sum': round(stock_manuf_sum, 2),
+            'stock_difference_byn': round(stock_sum - stock_manuf_sum),
+            'stock_difference_perc': round(((stock_sum-stock_manuf_sum)/stock_manuf_sum)*100, 2),
         }
         return render(request, 'view_shop.html', context)
     except:
@@ -314,17 +319,24 @@ def to_basket(request, id):
             if Product.objects.filter(id=id).exists():
                 shop = Shop.objects.get(name=shop_str)
                 item = Product.objects.get(id=id)
-                if item.amount >= int(request.POST.get('amount', '0')):
-                    am = int(request.POST.get('amount', '0'))
-                    item.amount -= am
-                    item.save()
-                    Profile.objects.get(user=request.user).cart.add(CartItem.objects.create(product=item, amount=am))
-                    # Product.objects.create(item=item, stock=shop, amount=am, price=float(request.POST.get('price', '0')))
-                    messages.success(request, (f"Товар был добавлен к вам в корзину"))
-                    return redirect('cart')
+                if profile.cart.filter(product=item).exists():
+                    messages.success(request, ("Вы были перенаправлены на страницу редактирования товара в корзине, так как пытались заказать точно такой же товар ещё раз"))
+                    return redirect('edit_cart', id=profile.cart.get(product=item).id)
                 else:
-                    messages.success(request, ("На складе магазина нет указанного количества товара!"))
-                    return redirect('to_basket', id=id)
+                    am = int(request.POST.get('amount', '0'))
+                    if item.amount >= am and item.amount > 0 and am > 0:
+                        item.amount -= am
+                        item.save()
+                        Profile.objects.get(user=request.user).cart.add(CartItem.objects.create(product=item, amount=am))
+                        # Product.objects.create(item=item, stock=shop, amount=am, price=float(request.POST.get('price', '0')))
+                        messages.success(request, (f"Товар был добавлен к вам в корзину"))
+                        return redirect('cart')
+                    elif am == 0:
+                        messages.success(request, ("Вы не можете добавить 0 товаров в корзину!"))
+                        return redirect('to_basket', id=id)
+                    else:
+                        messages.success(request, ("На складе магазина нет указанного количества товара!"))
+                        return redirect('to_basket', id=id)
             else:
                 messages.success(request, ("Товара с таким названием не существует"))
                 return redirect('to_basket', id=id)

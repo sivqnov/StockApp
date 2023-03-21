@@ -18,4 +18,5 @@ urlpatterns = [
     path('add_to_cart/<int:id>', add_to_cart, name='add_to_cart'),
     path('sub_from_cart/<int:id>', sub_from_cart, name='sub_from_cart'),
     path('edit_cart/<int:id>', edit_cart, name='edit_cart'),
+    path('to_orders', to_orders, name='to_orders'),
 ]

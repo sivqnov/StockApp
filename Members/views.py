@@ -236,3 +236,10 @@ def edit_cart(request, id):
     else:
         messages.success(request, ("Такого товара нет в вашей корзине"))
         return redirect('cart')
+    
+@login_required(login_url='login')
+def to_orders(request):
+    profile = Profile.objects.get(user=request.user)
+    
+    messages.success(request, ("Товары были заказаны, корзина очищена!"))
+    return redirect('cart')

@@ -29,8 +29,8 @@ class CatalogItem(models.Model):
     bio = models.TextField(blank=True, verbose_name='О товаре')
     code = models.CharField(max_length = 13, verbose_name='Код товара')
     photo = models.ImageField(upload_to = 'catalog_items/%Y/%m/%d/', blank=False, verbose_name='Фото')
-    date_of_manufacture = models.DateField(verbose_name='Дата производства', default='2000-01-01')
-    expiration_date = models.DateField(verbose_name='Годен до', default='2000-01-01')
+    date_of_manufacture = models.DateField(verbose_name='Дата производства')
+    expiration_date = models.DateField(verbose_name='Годен до')
     amount = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100000)], default=100, verbose_name='Произведено единиц')
     price = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(252734999999999.97)], verbose_name='Цена')
 

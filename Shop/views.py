@@ -139,6 +139,9 @@ def view_shop(request, name):
         for item in items:
             stock_sum += item.price * item.amount
             stock_manuf_sum += item.item.price * item.amount
+        stock_difference_perc = 0
+        if stock_sum and stock_manuf_sum:
+            stock_difference_perc = round(((stock_sum-stock_manuf_sum)/stock_manuf_sum)*100, 2)
         context = {
             'title': shop.name,
             'request': request,
@@ -151,7 +154,7 @@ def view_shop(request, name):
             'stock_sum': round(stock_sum, 2),
             'stock_manuf_sum': round(stock_manuf_sum, 2),
             'stock_difference_byn': round(stock_sum - stock_manuf_sum),
-            'stock_difference_perc': round(((stock_sum-stock_manuf_sum)/stock_manuf_sum)*100, 2),
+            'stock_difference_perc': stock_difference_perc,
         }
         return render(request, 'view_shop.html', context)
     except:

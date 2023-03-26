@@ -1,0 +1,50 @@
+{% load static %}
+
+<!-- {% if widget.is_initial %}
+    {{ widget.initial_text }}: <a href="{{ widget.value.url }}">{{ widget.value }}</a>
+    {% if not widget.required %}
+    <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"
+    {% if widget.attrs.disabled %} disabled{% endif %}>
+    <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    {% endif %}<br>
+    {{ widget.input_text }}:
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}> -->
+
+
+<div class="sm:col-span-6" x-data="{clear: false}">
+    <div class="mt-1 flex items-center" :class="clear && 'blur-sm'">
+        <span class="h-12 w-12 rounded-full overflow-hidden bg-gray-100 mr-2">
+            {% if widget.is_initial %}
+                <img id="previewImg" style="width: 100px; height: 100px" class="rounded-circle" src="{{ widget.value.url }}" alt="{{ widget.value }}">
+            {% else %}
+                <img id="previewImg" style="width: 100px; height: 100px" class="rounded-circle" src="{% static 'images/default_user.png' %}" alt="Default">
+            {% endif %}
+        </span>
+        <label for="avatar" class="">
+            <input class="btn btn-primary" id="fileBrowse" type="{{ widget.type }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %} style="display: none;">
+            <label for="fileBrowse" class="btn btn-primary">Загрузить</label>
+        </label>
+    </div>
+    {% if not widget.required %}
+    <div class="flex flex-row mt-2 px-2">
+        <label class="mt-0 mr-2" for="{{ widget.checkbox_id }}">
+            Удалить фото профиля
+        </label>
+        <input x-model="clear" type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %} disabled{% endif %}>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileBrowse');
+    const previewImg = document.getElementById('previewImg');
+    fileInput.onchange = () => {
+        const selectedFile = fileInput.files[0];
+        if(selectedFile){
+            previewImg.src = URL.createObjectURL(selectedFile);
+        }
+        console.log(`Name: ${selectedFile.name}\nPath: ${selectedFile.mozFullPath}`);
+        console.log(selectedFile);
+    }
+</script>

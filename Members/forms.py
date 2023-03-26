@@ -80,13 +80,18 @@ class UpdateUserForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs={'class': 'form-control form-control-lg', 'type': 'text', 'id': 'typeSurnameX'}
         self.fields['email'].widget.attrs={'class': 'form-control form-control-lg', 'type': 'email', 'id': 'typeEmailX'}
 
+class AvatarFileUploadInput(forms.ClearableFileInput):
+    input_type = 'file'
+    template_name = "widgets/image_upload_input.html"
+
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('bio', 'photo')
+        widgets = {"photo": AvatarFileUploadInput } # https://www.advantch.com/blog/how-to-create-custom-form-widgets-with-django-alpinejs-and-tailwindcss/
     
     def __init__(self, *args, **kwargs):
         super(UpdateProfileForm, self).__init__(*args, **kwargs)
 
         self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeLoginX', 'type': 'text'}
-        self.fields['photo'].widget.attrs={'class': 'form-control form-control-lg'}
+        self.fields['photo'].widget.attrs={'class': 'form-control form-control'}

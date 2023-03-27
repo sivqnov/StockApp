@@ -52,7 +52,9 @@
                     </div>
 
                     <div class="form-outline form-white mb-4">
+                      {% autoescape off %}
                       {{ formProfile.bio }}
+                      {% endautoescape %}
                       <label class="form-label" for="typeEmailX">О себе</label>
                     </div>
 

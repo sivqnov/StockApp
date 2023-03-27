@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 import os
 from Stock.settings import STATICFILES_DIRS
+import json
 # Create your views here.
 
 def login_user(request):
@@ -243,3 +244,16 @@ def to_orders(request):
     
     messages.success(request, ("Товары были заказаны, корзина очищена!"))
     return redirect('cart')
+
+@login_required(login_url='login')
+def save_bio(request):
+    if request.method == "POST":
+        result = json.loads(request.body)
+        profile = Profile.objects.get(user=request.user)
+        bio = result.get('bio', 'none')
+        profile.bio = bio
+        profile.save()
+        messages.success(request, ("Изменения сохранены!"))
+    else:
+        messages.success(request, ("Произошла ошибка!"))
+    return redirect('user', user=str(request.user))

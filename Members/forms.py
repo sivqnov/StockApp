@@ -93,5 +93,5 @@ class UpdateProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UpdateProfileForm, self).__init__(*args, **kwargs)
 
-        self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeLoginX', 'type': 'text'}
+        self.fields['bio'].widget.attrs={'class': 'form-control form-control-lg', 'id': 'typeLoginX', 'type': 'text', 'style': 'min-height: 42px;',}
         self.fields['photo'].widget.attrs={'class': 'form-control form-control'}

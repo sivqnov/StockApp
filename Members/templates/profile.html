@@ -7,6 +7,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+<link rel="stylesheet" href="{% static 'editor/sass/editor.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -61,9 +62,21 @@
 
             <div class="card-body p-4 text-black">
               <div class="mb-5">
-                <p class="lead fw-normal mb-1">О себе:</p>
+                <p class="lead fw-normal mb-1">
+                  О себе:
+                  <span class="btn btn-secondary btn-rounded btn-sm fw-bold" id="editBio"><i class="fas fa-pen"></i></span>
+                </p>
                 <div class="p-4" style="background-color: #f8f9fa;">
-                  <p class="font-italic mb-1">{{ profile.bio }}</p>
+                  {% autoescape off %}
+                  <div id="yseditor">{{ profile.bio }}</div>
+                  <div class="font-italic mb-1" id="initialBio">
+                    {{ profile.bio }}
+                  </div>
+                  {% endautoescape %}
+                  <div class="mt-2">
+                    <a class="btn btn-primary me-1" id="saveBio"><i class="fas fa-save me-2"></i>Сохранить</a>
+                    <a class="btn btn-outline-primary" id="cancelBio"><i class="fas fa-undo-alt me-2"></i>Отмена</a>
+                  </div>
                 </div>
               </div>
 
@@ -277,9 +290,72 @@
   </div>
 </div>
 {% endif %}
-
+<div id="HJaVHJFsHJBFdfs" style="display: none;">{{ csrf_token }}</div>
 {% endblock %}
 
 {% block import %}
-    
+  <script src="{% static 'scripts/edit_bio.js' %}"></script>
+  <script>
+    async function request(url, data, IhuioknjDA) {
+        const response = await fetch(url, {method: 'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded','X-CSRFToken': IhuioknjDA,},body: JSON.stringify(data),});
+        const result = await response.text();
+        // return result
+        location.reload()
+    }
+    const sfdIuFSvvsFSDvdsDVS = `${document.getElementById("HJaVHJFsHJBFdfs").innerHTML}`;
+    document.getElementById("HJaVHJFsHJBFdfs").remove();
+    let show = 0;
+    async function post() {
+      const url = `{% url 'save_bio' %}`;
+      const data = {
+        bio: document.getElementsByClassName('yseditor-content')[0].innerHTML,
+      };
+      const IUakbjadajkbAKJ = sfdIuFSvvsFSDvdsDVS;
+      const result = await request(url, data, IUakbjadajkbAKJ);
+    }
+    editBio = document.getElementById('editBio');
+    editBio.hidden = false;
+    yseditor = document.getElementById('yseditor');
+    yseditor.hidden = true;
+    initialBio = document.getElementById('initialBio');
+    initialBio.hidden = false;
+    saveBio = document.getElementById('saveBio');
+    saveBio.hidden = true;
+    cancelBio = document.getElementById('cancelBio');
+    cancelBio.hidden = true;
+    editBio.onclick = () => {
+      editBio.hidden = true;
+      yseditor.hidden = false;
+      initialBio.hidden = true;
+      saveBio.hidden = false;
+      cancelBio.hidden = false;
+      import("{% static 'editor/js/yseditor.js' %}")
+      .then(function () {
+        var myEditor = new ysEditor({
+            wrapper: '#yseditor',
+            toolbar: [
+              'undo', 'redo', 'bold', 'italic', 'underline',
+              'strikethrough', 'h1', 'h2', 'h3',
+              'left', 'center', 'right', 'removeformat'],
+            bottom: false,
+            height: 200,
+            scroll: false,
+            includeContent: true,
+            footer: false,
+        });
+      });
+    }
+
+    cancelBio.onclick = () => {
+      editBio.hidden = false;
+      yseditor.hidden = true;
+      initialBio.hidden = false;
+      saveBio.hidden = true;
+      cancelBio.hidden = true;
+    }
+
+    saveBio.onclick = () => {
+      post();
+    }
+  </script>
 {% endblock %}
